@@ -145,8 +145,16 @@
       justify-content: center;
       align-items: center;
       position: relative;
-      background: linear-gradient(180deg, var(--sky) 0%, var(--sky) 70%, var(--grass) 70%, var(--grass) 100%);
+      background: var(--sky);
       overflow: hidden;
+    }
+
+    .hero-bg-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
     }
     
     .hero-content {
@@ -166,7 +174,7 @@
     }
     
     .hero-title {
-      font-size: clamp(48px, 12vw, 160px);
+      font-size: clamp(72px, 14vw, 200px);
       font-weight: 700;
       line-height: 0.9;
       margin-bottom: 30px;
@@ -235,19 +243,58 @@
       transform: translateX(5px);
     }
     
-    /* Snoopy on doghouse */
+    /* Snoopy — corner easter egg */
     .snoopy-container {
       position: absolute;
-      bottom: 20%;
-      right: 8%;
+      bottom: 20px;
+      right: 20px;
       z-index: 5;
       animation: float 4s ease-in-out infinite;
+      cursor: default;
     }
-    
+
     .snoopy-doghouse {
-      width: 500px;
+      width: 130px;
       height: auto;
       object-fit: contain;
+      mix-blend-mode: multiply;
+      transition: transform 0.3s ease;
+    }
+
+    .snoopy-container:hover .snoopy-doghouse {
+      transform: translateY(-8px) scale(1.08);
+    }
+
+    .easter-egg-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      right: 0;
+      background: var(--white);
+      color: var(--black);
+      padding: 7px 14px;
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+      border: 2px solid var(--black);
+    }
+
+    .easter-egg-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      right: 22px;
+      border: 6px solid transparent;
+      border-top-color: var(--black);
+    }
+
+    .snoopy-container:hover .easter-egg-tooltip {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     /* Clouds */
@@ -825,9 +872,7 @@
         grid-template-columns: 1fr;
       }
       
-      .snoopy-container {
-        display: none;
-      }
+      /* snoopy stays as corner easter egg on tablet */
       
       .about-visual {
         height: 350px;
@@ -839,6 +884,10 @@
     }
     
     @media (max-width: 768px) {
+      /* Hide SVG bg on mobile — fallback to solid sky */
+      .hero-bg-svg { display: none; }
+      .hero { background: linear-gradient(180deg, var(--sky) 0%, var(--sky) 70%, var(--grass) 70%, var(--grass) 100%); }
+
       nav {
         padding: 15px 20px;
       }
@@ -896,7 +945,7 @@
   <!-- Navigation -->
   <nav>
     <a href="#" class="logo">
-      <img src="images/drone_logo.png" alt="Snoopy" class="logo-img">
+      <img src="images/snoopy-head.png" alt="Snoopy" class="logo-img">
       ISAAC.
     </a>
     <ul class="nav-links">
@@ -909,20 +958,188 @@
   
   <!-- Hero Section -->
   <section class="hero">
+
+    <!-- Landmark background (Golden Gate · Campanile · Penang Bridge) -->
+    <svg class="hero-bg-svg" xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="hSkyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#87ceeb"/>
+          <stop offset="80%"  stop-color="#c2e8f7"/>
+          <stop offset="100%" stop-color="#d8f0fa"/>
+        </linearGradient>
+        <linearGradient id="hWaterGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#4e9fc0"/>
+          <stop offset="100%" stop-color="#2d6a8a"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Sky -->
+      <rect width="1440" height="700" fill="url(#hSkyGrad)"/>
+
+      <!-- Sun (top right) -->
+      <circle cx="1330" cy="90" r="55" fill="#ffe17a" opacity="0.4"/>
+      <circle cx="1330" cy="90" r="42" fill="#ffde59" opacity="0.65"/>
+
+      <!-- Birds -->
+      <path d="M310 140 Q315 135 320 140" stroke="#5a7a8a" stroke-width="2"   fill="none" stroke-linecap="round"/>
+      <path d="M328 130 Q334 124 340 130" stroke="#5a7a8a" stroke-width="2"   fill="none" stroke-linecap="round"/>
+      <path d="M620 110 Q626 104 632 110" stroke="#5a7a8a" stroke-width="2"   fill="none" stroke-linecap="round"/>
+      <path d="M642 118 Q647 113 652 118" stroke="#5a7a8a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M800 155 Q805 150 810 155" stroke="#5a7a8a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+      <!-- Far hills -->
+      <path d="M0 480 Q120 455 280 468 Q480 482 680 455 Q880 432 1080 450 Q1250 464 1440 442
+               L1440 510 L0 510 Z" fill="#a8d97f" opacity="0.4"/>
+
+      <!-- Water -->
+      <rect x="0" y="510" width="1440" height="190" fill="url(#hWaterGrad)"/>
+      <line x1="60"   y1="530" x2="220"  y2="530" stroke="rgba(255,255,255,0.22)" stroke-width="2"   stroke-linecap="round"/>
+      <line x1="310"  y1="548" x2="490"  y2="548" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="590"  y1="535" x2="780"  y2="535" stroke="rgba(255,255,255,0.2)"  stroke-width="2"   stroke-linecap="round"/>
+      <line x1="840"  y1="555" x2="1060" y2="555" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="1120" y1="540" x2="1390" y2="540" stroke="rgba(255,255,255,0.2)"  stroke-width="2"   stroke-linecap="round"/>
+      <line x1="100"  y1="565" x2="280"  y2="565" stroke="rgba(255,255,255,0.12)" stroke-width="1"   stroke-linecap="round"/>
+      <line x1="700"  y1="572" x2="950"  y2="572" stroke="rgba(255,255,255,0.12)" stroke-width="1"   stroke-linecap="round"/>
+
+      <!-- Small sailboat -->
+      <g transform="translate(490,498)">
+        <path d="M-14 12 Q0 18 14 12 L10 2 L-10 2 Z" fill="#e63946" stroke="#a93226" stroke-width="1"/>
+        <line x1="0" y1="2" x2="0" y2="-28"  stroke="#5a4030" stroke-width="2"/>
+        <path d="M0 -26 L-18 2 L0 2 Z"        fill="rgba(255,255,255,0.9)" stroke="#ccc" stroke-width="0.5"/>
+        <path d="M0 -26 L16 0 L0 0 Z"          fill="rgba(255,255,255,0.7)" stroke="#ccc" stroke-width="0.5"/>
+      </g>
+
+      <!-- Left bank grass -->
+      <path d="M0 504 Q80 496 160 501 Q240 506 360 499 Q450 494 500 500
+               L500 520 Q450 514 360 518 Q240 524 160 520 Q80 516 0 522 Z"
+            fill="#7cb342" opacity="0.85"/>
+
+      <!-- ===== GOLDEN GATE BRIDGE ===== -->
+      <rect x="15"  y="502" width="460" height="11" fill="#c0392b" rx="2"/>
+      <rect x="15"  y="498" width="460" height="5"  fill="#a93226" rx="1"/>
+      <!-- Left tower -->
+      <rect x="137" y="318" width="22" height="193" fill="#c0392b"/>
+      <rect x="134" y="310" width="28" height="14"  fill="#c0392b" rx="2"/>
+      <rect x="131" y="345" width="34" height="10"  fill="#c0392b" rx="1"/>
+      <rect x="131" y="378" width="34" height="10"  fill="#c0392b" rx="1"/>
+      <rect x="131" y="415" width="34" height="10"  fill="#c0392b" rx="1"/>
+      <!-- Right tower -->
+      <rect x="304" y="318" width="22" height="193" fill="#c0392b"/>
+      <rect x="301" y="310" width="28" height="14"  fill="#c0392b" rx="2"/>
+      <rect x="298" y="345" width="34" height="10"  fill="#c0392b" rx="1"/>
+      <rect x="298" y="378" width="34" height="10"  fill="#c0392b" rx="1"/>
+      <rect x="298" y="415" width="34" height="10"  fill="#c0392b" rx="1"/>
+      <!-- Main cables -->
+      <path d="M15 502 L148 316"                     stroke="#c0392b" stroke-width="5" fill="none"/>
+      <path d="M148 316 C 185 402, 278 402, 315 316" stroke="#c0392b" stroke-width="5" fill="none"/>
+      <path d="M315 316 L475 502"                    stroke="#c0392b" stroke-width="5" fill="none"/>
+      <!-- Hangers — left backspan -->
+      <line x1="55"  y1="455" x2="55"  y2="510" stroke="#c0392b" stroke-width="2"/>
+      <line x1="88"  y1="416" x2="88"  y2="510" stroke="#c0392b" stroke-width="2"/>
+      <line x1="118" y1="373" x2="118" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <!-- Hangers — main span -->
+      <line x1="170" y1="352" x2="170" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <line x1="192" y1="374" x2="192" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <line x1="213" y1="388" x2="213" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <line x1="232" y1="396" x2="232" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <line x1="252" y1="390" x2="252" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <line x1="273" y1="376" x2="273" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <line x1="294" y1="355" x2="294" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <!-- Hangers — right backspan -->
+      <line x1="340" y1="372" x2="340" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <line x1="375" y1="412" x2="375" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <line x1="413" y1="450" x2="413" y2="510" stroke="#c0392b" stroke-width="2"/>
+      <!-- Tower reflections -->
+      <rect x="143" y="510" width="6" height="40" fill="#c0392b" opacity="0.18"/>
+      <rect x="308" y="510" width="6" height="40" fill="#c0392b" opacity="0.18"/>
+
+      <!-- ===== BERKELEY CAMPANILE ===== -->
+      <rect x="538" y="492" width="44" height="20" fill="#8B7D6B" rx="2"/>
+      <rect x="541" y="392" width="38" height="102" fill="#9B8E7E"/>
+      <rect x="538" y="486" width="44" height="8"   fill="#7a6b5a"/>
+      <rect x="538" y="388" width="44" height="8"   fill="#7a6b5a"/>
+      <rect x="544" y="342" width="32" height="52"  fill="#9B8E7E"/>
+      <rect x="541" y="338" width="38" height="7"   fill="#7a6b5a"/>
+      <rect x="546" y="296" width="28" height="48"  fill="#9B8E7E"/>
+      <rect x="543" y="292" width="34" height="7"   fill="#7a6b5a"/>
+      <rect x="548" y="256" width="24" height="42"  fill="#9B8E7E"/>
+      <rect x="545" y="252" width="30" height="7"   fill="#7a6b5a"/>
+      <!-- Belfry -->
+      <rect x="546" y="218" width="28" height="40"  fill="#7a6b5a"/>
+      <path d="M549 255 L549 228 Q553 219 557 228 L557 255 Z" fill="#87ceeb" opacity="0.75"/>
+      <path d="M563 255 L563 228 Q567 219 571 228 L571 255 Z" fill="#87ceeb" opacity="0.75"/>
+      <rect x="545" y="250" width="30" height="6"   fill="#7a6b5a"/>
+      <!-- Clock -->
+      <rect x="546" y="190" width="28" height="30"  fill="#9B8E7E"/>
+      <circle cx="560" cy="205" r="11" fill="#f5f0e0" stroke="#7a6b5a" stroke-width="2.5"/>
+      <line x1="560" y1="205" x2="560" y2="198" stroke="#5a4b3a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="560" y1="205" x2="566" y2="205" stroke="#5a4b3a" stroke-width="2" stroke-linecap="round"/>
+      <rect x="545" y="186" width="30" height="6"   fill="#7a6b5a"/>
+      <!-- Lantern -->
+      <rect x="548" y="162" width="24" height="26"  fill="#8B7D6B"/>
+      <path d="M551 186 L551 170 Q554.5 162 558 170 L558 186 Z" fill="#87ceeb" opacity="0.6"/>
+      <path d="M562 186 L562 170 Q565.5 162 569 170 L569 186 Z" fill="#87ceeb" opacity="0.6"/>
+      <!-- Roof + finial -->
+      <polygon points="546,162 560,124 574,162" fill="#7a6b5a"/>
+      <line x1="560" y1="124" x2="560" y2="108" stroke="#7a6b5a" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="560" cy="106" r="4" fill="#7a6b5a"/>
+      <!-- Campanile reflection -->
+      <rect x="556" y="510" width="8" height="60" fill="#9B8E7E" opacity="0.18"/>
+
+      <!-- ===== PENANG BRIDGE (cable-stayed) ===== -->
+      <rect x="690" y="502" width="730" height="11" fill="#4a90d9" rx="2"/>
+      <rect x="690" y="498" width="730" height="5"  fill="#3a7ab9" rx="1"/>
+      <!-- Pylon 1 -->
+      <rect x="883" y="340" width="13" height="172" fill="#4a90d9"/>
+      <rect x="909" y="340" width="13" height="172" fill="#4a90d9"/>
+      <rect x="880" y="375" width="45" height="10"  fill="#4a90d9" rx="1"/>
+      <rect x="880" y="415" width="45" height="10"  fill="#4a90d9" rx="1"/>
+      <rect x="879" y="336" width="47" height="10"  fill="#2f70a9" rx="2"/>
+      <!-- Pylon 1 left cables -->
+      <line x1="888" y1="340" x2="690"  y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <line x1="888" y1="346" x2="730"  y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <line x1="888" y1="352" x2="775"  y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <line x1="888" y1="358" x2="820"  y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <line x1="888" y1="364" x2="860"  y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <!-- Pylon 1 right cables -->
+      <line x1="919" y1="340" x2="1080" y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <line x1="919" y1="346" x2="1030" y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <line x1="919" y1="352" x2="985"  y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <line x1="919" y1="358" x2="950"  y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <!-- Pylon 2 -->
+      <rect x="1163" y="358" width="12" height="154" fill="#4a90d9"/>
+      <rect x="1187" y="358" width="12" height="154" fill="#4a90d9"/>
+      <rect x="1160" y="390" width="42" height="9"   fill="#4a90d9" rx="1"/>
+      <rect x="1159" y="354" width="43" height="9"   fill="#2f70a9" rx="2"/>
+      <!-- Pylon 2 left cables -->
+      <line x1="1167" y1="358" x2="1080" y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <line x1="1167" y1="364" x2="1120" y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.85"/>
+      <!-- Pylon 2 right cables -->
+      <line x1="1195" y1="358" x2="1340" y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.8"/>
+      <line x1="1195" y1="364" x2="1295" y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.8"/>
+      <line x1="1195" y1="370" x2="1255" y2="502" stroke="#4a90d9" stroke-width="2" opacity="0.8"/>
+      <!-- Fading right deck -->
+      <rect x="1370" y="502" width="70" height="11" fill="#4a90d9" rx="2" opacity="0.5"/>
+      <!-- Pylon reflections -->
+      <rect x="887"  y="510" width="5" height="30" fill="#4a90d9" opacity="0.2"/>
+      <rect x="1167" y="510" width="5" height="30" fill="#4a90d9" opacity="0.2"/>
+    </svg>
+
     <div class="cloud cloud-1"></div>
     <div class="cloud cloud-2"></div>
     <div class="cloud cloud-3"></div>
     
     <div class="snoopy-container">
-      <img src="images/snoopy-doghouse.png" alt="Snoopy sleeping on doghouse" class="snoopy-doghouse">
+      <div class="easter-egg-tooltip">psst… you found me! 🐾</div>
+      <img src="images/snoopy-doghouse.png" alt="Snoopy on doghouse" class="snoopy-doghouse">
     </div>
     
     <div class="hero-content">
       <p class="hero-pretitle">EECS @ UC Berkeley</p>
       <h1 class="hero-title">
-        <span class="line">Building</span>
-        <span class="line"><span class="highlight">Dreams</span></span>
-        <span class="line">Into Code</span>
+        <span class="line">ISAAC</span>
+        <span class="line"><span class="highlight">PUAH.</span></span>
       </h1>
       <p class="hero-subtitle">
         Developer, dreamer, and doer. Turning caffeine into embedded systems, ML models, and the occasional flying robot.
@@ -996,7 +1213,7 @@
     <div class="projects-grid">
       <div class="project-card reveal">
         <div class="project-image" style="background: #e63946;">
-          <img src="images/f1-icon.png" alt="F1 Car">
+          <img src="images/f1-icon.svg" alt="F1 Car">
         </div>
         <div class="project-info">
           <div class="project-tags">
@@ -1015,7 +1232,7 @@
       
       <div class="project-card reveal">
         <div class="project-image" style="background: #4a90d9;">
-          <img src="images/drone-icon.png" alt="Drone">
+          <img src="images/drone-icon.svg" alt="Drone">
         </div>
         <div class="project-info">
           <div class="project-tags">
@@ -1034,7 +1251,7 @@
       
       <div class="project-card reveal">
         <div class="project-image" style="background: #7cb342;">
-          <img src="images/solar-car-icon.png" alt="Solar Car">
+          <img src="images/solar-car-icon.svg" alt="Solar Car">
         </div>
         <div class="project-info">
           <div class="project-tags">
@@ -1053,7 +1270,7 @@
       
       <div class="project-card reveal">
         <div class="project-image" style="background: #ffde59;">
-          <img src="images/code-icon.png" alt="Code">
+          <img src="images/code-icon.svg" alt="Code">
         </div>
         <div class="project-info">
           <div class="project-tags">
