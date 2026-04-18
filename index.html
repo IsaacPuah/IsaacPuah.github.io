@@ -1,1837 +1,515 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Isaac's Portfolio - Drone Systems Engineer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Isaac Puah — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400&display=swap"
+    rel="stylesheet"
+  />
   <style>
-    /* ═══════════════════════════════════════════════════════════════════════
-       WINTER CHILL RETRO PORTFOLIO
-       A minimalistic OS-inspired portfolio with teal/gray winter palette
-    ═══════════════════════════════════════════════════════════════════════ */
-    
     :root {
-      /* Winter Chill Palette */
-      --frost-white: #e8f4f8;
-      --ice-blue: #c5dde8;
-      --glacier-teal: #5a9aa8;
-      --deep-teal: #2d6a7a;
-      --midnight-teal: #1a4a5a;
-      --charcoal-frost: #3a4a52;
-      --snow-gray: #d0dce0;
-      --steel-gray: #8a9ea6;
-      --dark-slate: #2a3a42;
-      
-      /* UI Colors */
-      --window-bg: #c8d8dc;
-      --window-title: linear-gradient(180deg, #5a9aa8 0%, #3d7a8a 50%, #2d6a7a 100%);
-      --window-title-inactive: linear-gradient(180deg, #8a9ea6 0%, #6a7e86 50%, #5a6e76 100%);
-      --button-face: #c0d0d4;
-      --button-highlight: #e8f4f8;
-      --button-shadow: #5a6e76;
-      --button-dark-shadow: #3a4a52;
-      
-      /* System fonts for authentic retro feel */
-      --font-system: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      --font-mono: 'Consolas', 'Courier New', monospace;
+      --paper: #f6f5f1;
+      --ink: #141414;
+      --ink-soft: #3a3a3a;
+      --ink-mute: #7a7a75;
+      --rule: #1d1d1d;
+      --rule-soft: rgba(20, 20, 20, 0.15);
     }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: var(--font-system);
-      font-size: 12px;
-      overflow: hidden;
-      user-select: none;
-      background: var(--midnight-teal);
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "EB Garamond", "Iowan Old Style", "Palatino", Georgia, serif;
+      font-size: 19px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       BOOT SEQUENCE
-    ═══════════════════════════════════════════════════════════════════════ */
-    
-    #boot-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, #0a1a20 0%, #1a2a32 50%, #0a1a20 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-      transition: opacity 0.8s ease-out;
-    }
-    
-    #boot-screen.fade-out {
-      opacity: 0;
+
+    /* Subtle paper texture without any drawn graphic */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
       pointer-events: none;
+      background-image:
+        radial-gradient(rgba(20, 20, 20, 0.035) 1px, transparent 1px);
+      background-size: 3px 3px;
+      opacity: 0.55;
+      z-index: 0;
     }
-    
-    .boot-logo {
-      width: 120px;
-      height: 120px;
-      margin-bottom: 40px;
+
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 72px 40px 120px;
       position: relative;
+      z-index: 1;
     }
-    
-    .boot-logo svg {
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 0 20px rgba(90, 154, 168, 0.5));
-    }
-    
-    .boot-logo .propeller {
-      transform-origin: center;
-      animation: spin 2s linear infinite;
-    }
-    
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    
-    .boot-text {
-      font-family: var(--font-mono);
-      color: var(--glacier-teal);
-      font-size: 14px;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-    
-    .boot-text .typing {
-      overflow: hidden;
-      white-space: nowrap;
-      animation: typing 2s steps(30);
-    }
-    
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
-    }
-    
-    .loading-container {
-      width: 400px;
-      padding: 3px;
-      background: var(--dark-slate);
-      border: 2px solid var(--steel-gray);
-      border-radius: 2px;
-    }
-    
-    .loading-bar {
-      height: 20px;
-      background: linear-gradient(90deg, 
-        var(--deep-teal) 0%, 
-        var(--glacier-teal) 50%, 
-        var(--deep-teal) 100%);
-      background-size: 200% 100%;
-      animation: loading 2.5s ease-in-out forwards, shimmer 1s ease-in-out infinite;
-      width: 0%;
-      border-radius: 1px;
-      position: relative;
-    }
-    
-    .loading-bar::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 50%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
-    }
-    
-    @keyframes loading {
-      0% { width: 0%; }
-      20% { width: 25%; }
-      50% { width: 60%; }
-      80% { width: 85%; }
-      100% { width: 100%; }
-    }
-    
-    @keyframes shimmer {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-    
-    .boot-status {
-      font-family: var(--font-mono);
-      color: var(--steel-gray);
+
+    /* ——— Top meta bar ——— */
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
       font-size: 11px;
-      margin-top: 15px;
-      height: 60px;
-      overflow: hidden;
-    }
-    
-    .boot-status div {
-      opacity: 0;
-      animation: fadeIn 0.3s ease forwards;
-    }
-    
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       DESKTOP
-    ═══════════════════════════════════════════════════════════════════════ */
-    
-    #desktop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: calc(100% - 36px);
-      background: 
-        radial-gradient(ellipse at 30% 20%, rgba(90, 154, 168, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 80%, rgba(45, 106, 122, 0.1) 0%, transparent 50%),
-        linear-gradient(180deg, #1a4a5a 0%, #2d6a7a 30%, #1a4a5a 100%);
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    
-    #desktop.visible {
-      opacity: 1;
-    }
-    
-    /* Subtle snow effect */
-    #desktop::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: 
-        radial-gradient(1px 1px at 100px 50px, rgba(255,255,255,0.3), transparent),
-        radial-gradient(1px 1px at 200px 150px, rgba(255,255,255,0.2), transparent),
-        radial-gradient(1px 1px at 300px 80px, rgba(255,255,255,0.25), transparent),
-        radial-gradient(1px 1px at 400px 200px, rgba(255,255,255,0.15), transparent),
-        radial-gradient(1px 1px at 500px 100px, rgba(255,255,255,0.2), transparent),
-        radial-gradient(1px 1px at 50px 250px, rgba(255,255,255,0.3), transparent),
-        radial-gradient(1px 1px at 600px 300px, rgba(255,255,255,0.2), transparent);
-      pointer-events: none;
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       DESKTOP ICONS
-    ═══════════════════════════════════════════════════════════════════════ */
-    
-    .desktop-icons {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: fit-content;
-    }
-    
-    .desktop-icon {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 70px;
-      padding: 8px;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background 0.15s;
-    }
-    
-    .desktop-icon:hover {
-      background: rgba(90, 154, 168, 0.3);
-    }
-    
-    .desktop-icon:active {
-      background: rgba(90, 154, 168, 0.5);
-    }
-    
-    .desktop-icon .icon {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-    }
-    
-    .desktop-icon span {
-      color: var(--frost-white);
-      font-size: 11px;
-      text-align: center;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-      word-wrap: break-word;
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       WINDOWS
-    ═══════════════════════════════════════════════════════════════════════ */
-    
-    .window {
-      position: absolute;
-      background: var(--window-bg);
-      border: 2px solid var(--charcoal-frost);
-      box-shadow: 
-        inset 1px 1px 0 var(--button-highlight),
-        inset -1px -1px 0 var(--button-shadow),
-        4px 4px 12px rgba(0,0,0,0.4);
-      min-width: 280px;
-      min-height: 200px;
-      display: none;
-      flex-direction: column;
-      transition: box-shadow 0.15s;
-    }
-    
-    .window.active {
-      box-shadow: 
-        inset 1px 1px 0 var(--button-highlight),
-        inset -1px -1px 0 var(--button-shadow),
-        6px 6px 20px rgba(0,0,0,0.5);
-    }
-    
-    .window.open {
-      display: flex;
-      animation: windowOpen 0.2s ease-out;
-    }
-    
-    @keyframes windowOpen {
-      from {
-        transform: scale(0.9);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-    
-    .window.minimizing {
-      animation: windowMinimize 0.2s ease-in forwards;
-    }
-    
-    @keyframes windowMinimize {
-      to {
-        transform: scale(0.1) translateY(100vh);
-        opacity: 0;
-      }
-    }
-    
-    .window-titlebar {
-      background: var(--window-title);
-      padding: 4px 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: move;
-    }
-    
-    .window.inactive .window-titlebar {
-      background: var(--window-title-inactive);
-    }
-    
-    .window-titlebar .icon {
-      width: 16px;
-      height: 16px;
-      font-size: 14px;
-    }
-    
-    .window-title {
-      flex: 1;
-      color: var(--frost-white);
-      font-weight: bold;
-      font-size: 12px;
-      text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-    }
-    
-    .window-controls {
-      display: flex;
-      gap: 3px;
-    }
-    
-    .window-btn {
-      width: 18px;
-      height: 18px;
-      background: var(--button-face);
-      border: none;
-      cursor: pointer;
-      font-size: 10px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--dark-slate);
-      box-shadow: 
-        inset 1px 1px 0 var(--button-highlight),
-        inset -1px -1px 0 var(--button-dark-shadow),
-        inset 2px 2px 0 var(--button-face),
-        inset -2px -2px 0 var(--button-shadow);
-    }
-    
-    .window-btn:hover {
-      background: var(--ice-blue);
-    }
-    
-    .window-btn:active {
-      box-shadow: 
-        inset -1px -1px 0 var(--button-highlight),
-        inset 1px 1px 0 var(--button-dark-shadow),
-        inset -2px -2px 0 var(--button-face),
-        inset 2px 2px 0 var(--button-shadow);
-    }
-    
-    .window-btn.close:hover {
-      background: #c75050;
-      color: white;
-    }
-    
-    .window-content {
-      flex: 1;
-      padding: 12px;
-      overflow: auto;
-      background: var(--frost-white);
-      border: 2px solid;
-      border-color: var(--button-shadow) var(--button-highlight) var(--button-highlight) var(--button-shadow);
-      margin: 4px;
-    }
-    
-    .window-resize {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 16px;
-      height: 16px;
-      cursor: nwse-resize;
-      background: 
-        linear-gradient(135deg, 
-          transparent 30%, 
-          var(--steel-gray) 30%, 
-          var(--steel-gray) 40%, 
-          transparent 40%, 
-          transparent 50%, 
-          var(--steel-gray) 50%, 
-          var(--steel-gray) 60%, 
-          transparent 60%, 
-          transparent 70%, 
-          var(--steel-gray) 70%, 
-          var(--steel-gray) 80%, 
-          transparent 80%);
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       TASKBAR
-    ═══════════════════════════════════════════════════════════════════════ */
-    
-    #taskbar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 36px;
-      background: var(--window-bg);
-      border-top: 2px solid var(--button-highlight);
-      display: flex;
-      align-items: center;
-      padding: 3px;
-      gap: 4px;
-      z-index: 9999;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    
-    #taskbar.visible {
-      opacity: 1;
-    }
-    
-    .start-button {
-      height: 28px;
-      padding: 0 10px;
-      background: var(--button-face);
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--dark-slate);
-      box-shadow: 
-        inset 1px 1px 0 var(--button-highlight),
-        inset -1px -1px 0 var(--button-dark-shadow),
-        inset 2px 2px 0 var(--button-face),
-        inset -2px -2px 0 var(--button-shadow);
-    }
-    
-    .start-button:hover {
-      background: var(--ice-blue);
-    }
-    
-    .start-button:active,
-    .start-button.active {
-      box-shadow: 
-        inset -1px -1px 0 var(--button-highlight),
-        inset 1px 1px 0 var(--button-dark-shadow),
-        inset -2px -2px 0 var(--button-face),
-        inset 2px 2px 0 var(--button-shadow);
-    }
-    
-    .start-button .logo {
-      width: 18px;
-      height: 18px;
-    }
-    
-    .taskbar-divider {
-      width: 2px;
-      height: 24px;
-      background: linear-gradient(180deg, var(--button-shadow) 0%, var(--button-highlight) 100%);
-      margin: 0 4px;
-    }
-    
-    .taskbar-windows {
-      flex: 1;
-      display: flex;
-      gap: 4px;
-      overflow-x: auto;
-    }
-    
-    .taskbar-item {
-      height: 26px;
-      min-width: 140px;
-      max-width: 180px;
-      padding: 0 8px;
-      background: var(--button-face);
-      border: none;
-      cursor: pointer;
-      font-size: 11px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--dark-slate);
-      box-shadow: 
-        inset 1px 1px 0 var(--button-highlight),
-        inset -1px -1px 0 var(--button-dark-shadow),
-        inset 2px 2px 0 var(--button-face),
-        inset -2px -2px 0 var(--button-shadow);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    .taskbar-item:hover {
-      background: var(--ice-blue);
-    }
-    
-    .taskbar-item.active {
-      background: var(--snow-gray);
-      box-shadow: 
-        inset -1px -1px 0 var(--button-highlight),
-        inset 1px 1px 0 var(--button-dark-shadow),
-        inset -2px -2px 0 var(--button-face),
-        inset 2px 2px 0 var(--button-shadow);
-    }
-    
-    .taskbar-item .icon {
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-    
-    .system-tray {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0 8px;
-      height: 26px;
-      background: var(--snow-gray);
-      border: 2px solid;
-      border-color: var(--button-shadow) var(--button-highlight) var(--button-highlight) var(--button-shadow);
-    }
-    
-    .tray-icon {
-      font-size: 14px;
-      cursor: pointer;
-      opacity: 0.8;
-    }
-    
-    .tray-icon:hover {
-      opacity: 1;
-    }
-    
-    .clock {
-      font-family: var(--font-system);
-      font-size: 11px;
-      color: var(--dark-slate);
-      padding-left: 8px;
-      border-left: 1px solid var(--steel-gray);
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       START MENU
-    ═══════════════════════════════════════════════════════════════════════ */
-    
-    #start-menu {
-      position: fixed;
-      bottom: 38px;
-      left: 3px;
-      width: 240px;
-      background: var(--window-bg);
-      border: 2px solid var(--charcoal-frost);
-      box-shadow: 
-        inset 1px 1px 0 var(--button-highlight),
-        inset -1px -1px 0 var(--button-shadow),
-        4px 4px 12px rgba(0,0,0,0.4);
-      display: none;
-      z-index: 10000;
-    }
-    
-    #start-menu.open {
-      display: block;
-      animation: menuSlide 0.15s ease-out;
-    }
-    
-    @keyframes menuSlide {
-      from {
-        transform: translateY(10px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-    
-    .start-menu-header {
-      background: var(--window-title);
-      padding: 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .start-menu-header .avatar {
-      width: 48px;
-      height: 48px;
-      background: var(--frost-white);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      box-shadow: 
-        inset 1px 1px 0 var(--button-shadow),
-        inset -1px -1px 0 var(--button-highlight);
-    }
-    
-    .start-menu-header .user-info {
-      color: var(--frost-white);
-    }
-    
-    .start-menu-header .user-name {
-      font-weight: bold;
-      font-size: 13px;
-      text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-    }
-    
-    .start-menu-header .user-title {
-      font-size: 10px;
-      opacity: 0.9;
-    }
-    
-    .start-menu-items {
-      padding: 6px;
-    }
-    
-    .start-menu-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: background 0.1s;
-    }
-    
-    .start-menu-item:hover {
-      background: var(--glacier-teal);
-      color: var(--frost-white);
-    }
-    
-    .start-menu-item .icon {
-      font-size: 18px;
-      width: 24px;
-      text-align: center;
-    }
-    
-    .start-menu-divider {
-      height: 1px;
-      background: var(--steel-gray);
-      margin: 6px 10px;
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       CONTENT STYLES
-    ═══════════════════════════════════════════════════════════════════════ */
-    
-    .content-section {
-      margin-bottom: 16px;
-    }
-    
-    .content-section h2 {
-      font-size: 14px;
-      color: var(--deep-teal);
-      margin-bottom: 10px;
-      padding-bottom: 4px;
-      border-bottom: 1px solid var(--ice-blue);
-    }
-    
-    .content-section p {
-      font-size: 12px;
-      line-height: 1.6;
-      color: var(--charcoal-frost);
-      margin-bottom: 8px;
-    }
-    
-    /* About Window */
-    .about-header {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid var(--ice-blue);
-    }
-    
-    .about-avatar {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--glacier-teal), var(--deep-teal));
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      box-shadow: 
-        inset 2px 2px 4px rgba(255,255,255,0.3),
-        inset -2px -2px 4px rgba(0,0,0,0.2),
-        2px 2px 8px rgba(0,0,0,0.2);
-    }
-    
-    .about-info h1 {
-      font-size: 18px;
-      color: var(--midnight-teal);
-      margin-bottom: 4px;
-    }
-    
-    .about-info .title {
-      color: var(--glacier-teal);
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-    
-    .about-info .tagline {
-      font-size: 11px;
-      color: var(--steel-gray);
-      font-style: italic;
-    }
-    
-    /* Skills */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-    
-    .skill-category {
-      background: var(--snow-gray);
-      padding: 10px;
-      border: 2px solid;
-      border-color: var(--button-shadow) var(--button-highlight) var(--button-highlight) var(--button-shadow);
-    }
-    
-    .skill-category h3 {
-      font-size: 11px;
-      color: var(--deep-teal);
-      margin-bottom: 6px;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: var(--ink-mute);
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--rule-soft);
     }
-    
-    .skill-tag {
-      display: inline-block;
-      background: var(--frost-white);
-      padding: 2px 6px;
-      margin: 2px;
-      font-size: 10px;
-      border: 1px solid var(--ice-blue);
-      border-radius: 2px;
+    .meta a { color: inherit; text-decoration: none; }
+    .meta a:hover { color: var(--ink); }
+    .meta .right span { margin-left: 18px; }
+
+    /* ——— Hero ——— */
+    .hero {
+      padding: 90px 0 60px;
+      border-bottom: 1px solid var(--rule-soft);
     }
-    
-    /* Projects */
-    .project-card {
-      background: var(--snow-gray);
-      border: 2px solid;
-      border-color: var(--button-shadow) var(--button-highlight) var(--button-highlight) var(--button-shadow);
-      margin-bottom: 12px;
-      overflow: hidden;
+    .name {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 500;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
     }
-    
-    .project-header {
-      background: linear-gradient(90deg, var(--deep-teal), var(--glacier-teal));
-      padding: 8px 12px;
-      color: var(--frost-white);
-      font-weight: bold;
+    .name em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--ink-soft);
+    }
+    .tagline {
+      margin-top: 28px;
+      font-size: clamp(20px, 2.2vw, 26px);
+      line-height: 1.4;
+      color: var(--ink-soft);
+      max-width: 620px;
+    }
+    .tagline-mono {
+      margin-top: 36px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
       font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
+    }
+
+    /* ——— Section heading ——— */
+    section { padding: 72px 0; border-bottom: 1px solid var(--rule-soft); }
+    section:last-of-type { border-bottom: none; }
+
+    .sec-head {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      align-items: baseline;
+      gap: 22px;
+      margin-bottom: 40px;
     }
-    
-    .project-body {
-      padding: 12px;
-    }
-    
-    .project-media {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    
-    .media-item {
-      aspect-ratio: 16/10;
-      background: var(--charcoal-frost);
-      border: 2px solid;
-      border-color: var(--button-shadow) var(--button-highlight) var(--button-highlight) var(--button-shadow);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--frost-white);
-      font-size: 10px;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .media-item:hover {
-      transform: scale(1.02);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    
-    .media-item .icon {
-      font-size: 24px;
-      margin-bottom: 4px;
-    }
-    
-    .media-item.video::after {
-      content: '▶';
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: rgba(90, 154, 168, 0.9);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-    }
-    
-    .project-desc {
+    .sec-num {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
       font-size: 11px;
-      line-height: 1.5;
-      color: var(--charcoal-frost);
-      margin-bottom: 8px;
+      letter-spacing: 0.15em;
+      color: var(--ink-mute);
     }
-    
-    .project-tech {
+    .sec-title {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .sec-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--rule-soft);
+    }
+
+    /* ——— About ——— */
+    .about p {
+      font-size: 22px;
+      line-height: 1.55;
+      max-width: 640px;
+      margin-bottom: 20px;
+    }
+    .about p em { color: var(--ink-soft); }
+    .about .lede {
+      font-size: 28px;
+      line-height: 1.4;
+      max-width: 680px;
+      margin-bottom: 28px;
+    }
+    .about .lede:first-letter {
+      font-size: 1.8em;
+      float: left;
+      line-height: 0.9;
+      padding-right: 8px;
+      padding-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ——— Projects ——— */
+    .project {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 28px;
+      padding: 36px 0;
+      border-top: 1px solid var(--rule-soft);
+      align-items: start;
+    }
+    .project:first-of-type { border-top: 1px solid var(--rule); }
+    .project:last-of-type { border-bottom: 1px solid var(--rule); }
+
+    .project-index {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--ink-mute);
+      padding-top: 10px;
+    }
+
+    .project-title {
+      font-size: clamp(28px, 3.6vw, 40px);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 14px;
+    }
+    .project-title em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+
+    .project-desc {
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: 640px;
+      margin-bottom: 18px;
+    }
+
+    .project-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
-    }
-    
-    .tech-tag {
-      background: var(--deep-teal);
-      color: var(--frost-white);
-      padding: 2px 8px;
-      font-size: 9px;
-      border-radius: 2px;
-    }
-    
-    /* Contact */
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    
-    .form-group label {
+      gap: 18px 26px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
       font-size: 11px;
-      font-weight: bold;
-      color: var(--charcoal-frost);
+      letter-spacing: 0.08em;
+      color: var(--ink-mute);
+      text-transform: uppercase;
     }
-    
-    .form-group input,
-    .form-group textarea {
-      padding: 6px 8px;
-      font-family: var(--font-system);
-      font-size: 12px;
-      border: 2px solid;
-      border-color: var(--button-shadow) var(--button-highlight) var(--button-highlight) var(--button-shadow);
-      background: var(--frost-white);
-      outline: none;
-    }
-    
-    .form-group input:focus,
-    .form-group textarea:focus {
-      border-color: var(--glacier-teal);
-    }
-    
-    .form-group textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
-    
-    .btn {
-      padding: 8px 16px;
-      font-family: var(--font-system);
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      background: var(--button-face);
-      border: none;
-      color: var(--dark-slate);
-      box-shadow: 
-        inset 1px 1px 0 var(--button-highlight),
-        inset -1px -1px 0 var(--button-dark-shadow),
-        inset 2px 2px 0 var(--button-face),
-        inset -2px -2px 0 var(--button-shadow);
-      transition: background 0.1s;
-    }
-    
-    .btn:hover {
-      background: var(--ice-blue);
-    }
-    
-    .btn:active {
-      box-shadow: 
-        inset -1px -1px 0 var(--button-highlight),
-        inset 1px 1px 0 var(--button-dark-shadow),
-        inset -2px -2px 0 var(--button-face),
-        inset 2px 2px 0 var(--button-shadow);
-    }
-    
-    .btn-primary {
-      background: var(--glacier-teal);
-      color: var(--frost-white);
-    }
-    
-    .btn-primary:hover {
-      background: var(--deep-teal);
-    }
-    
-    .contact-links {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-    
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 12px;
-      background: var(--snow-gray);
-      border: 2px solid;
-      border-color: var(--button-highlight) var(--button-shadow) var(--button-shadow) var(--button-highlight);
-      font-size: 11px;
-      text-decoration: none;
-      color: var(--charcoal-frost);
-      cursor: pointer;
-    }
-    
-    .contact-link:hover {
-      background: var(--ice-blue);
-    }
-    
-    /* Media Viewer Modal */
-    #media-viewer {
-      position: fixed;
-      top: 0;
-      left: 0;
+
+    .project-image {
+      margin-top: 28px;
       width: 100%;
-      height: 100%;
-      background: rgba(10, 26, 32, 0.95);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 20000;
+      max-width: 640px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #ebe9e1;
+      filter: grayscale(1) contrast(0.95);
+      transition: filter 0.6s ease;
     }
-    
-    #media-viewer.open {
+    .project-image:hover { filter: grayscale(0) contrast(1); }
+    .project-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ——— Contact / footer ——— */
+    .footer {
+      padding-top: 72px;
       display: flex;
-      animation: fadeIn 0.2s ease;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
     }
-    
-    .viewer-content {
-      max-width: 90%;
-      max-height: 90%;
-      position: relative;
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule-soft);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
     }
-    
-    .viewer-close {
+    .footer a:hover { border-bottom-color: var(--ink); }
+
+    /* ——— Crosshair cursor effect ——— */
+    .crosshair {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .crosshair.active { opacity: 1; }
+    .crosshair .line {
       position: absolute;
-      top: -30px;
-      right: 0;
-      background: none;
-      border: none;
-      color: var(--frost-white);
-      font-size: 24px;
-      cursor: pointer;
+      background: var(--ink);
+      opacity: 0.22;
     }
-    
-    .viewer-media {
-      max-width: 100%;
-      max-height: 80vh;
-      border: 4px solid var(--charcoal-frost);
-      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    /* Small dot at the intersection — the eye's anchor point */
+    .crosshair .dot {
+      position: absolute;
+      width: 5px; height: 5px;
+      background: var(--ink);
+      border-radius: 50%;
+      top: 0; left: 0;
+      transform: translate(-50%, -50%);
+      opacity: 0.75;
+      will-change: transform;
     }
-    
-    .viewer-caption {
-      text-align: center;
-      color: var(--frost-white);
-      margin-top: 12px;
-      font-size: 13px;
+    .crosshair .line-h {
+      left: 0; right: 0;
+      height: 1px;
+      top: 0;
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
     }
-    
-    /* Scrollbar styling */
-    ::-webkit-scrollbar {
-      width: 16px;
-      height: 16px;
+    .crosshair .line-v {
+      top: 0; bottom: 0;
+      width: 1px;
+      left: 0;
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
     }
-    
-    ::-webkit-scrollbar-track {
-      background: var(--snow-gray);
-      border: 1px solid var(--steel-gray);
+
+    .coords {
+      position: fixed;
+      bottom: 18px;
+      right: 22px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
+      background: var(--paper);
+      padding: 6px 10px;
+      border: 1px solid var(--rule-soft);
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      white-space: nowrap;
     }
-    
-    ::-webkit-scrollbar-thumb {
-      background: var(--button-face);
-      border: 2px solid var(--snow-gray);
-      box-shadow: 
-        inset 1px 1px 0 var(--button-highlight),
-        inset -1px -1px 0 var(--button-shadow);
+    .coords.active { opacity: 1; }
+
+    /* Hide effect on touch devices */
+    @media (hover: none), (pointer: coarse) {
+      .crosshair, .coords { display: none; }
     }
-    
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--ice-blue);
-    }
-    
-    ::-webkit-scrollbar-corner {
-      background: var(--snow-gray);
+
+    /* ——— Responsive ——— */
+    @media (max-width: 640px) {
+      .wrap { padding: 40px 24px 80px; }
+      .project { grid-template-columns: 1fr; gap: 10px; }
+      .project-index { padding-top: 0; }
+      .meta { flex-direction: column; gap: 6px; align-items: flex-start; }
+      .meta .right span { margin-left: 0; margin-right: 16px; }
     }
   </style>
 </head>
 <body>
-  <!-- Boot Screen -->
-  <div id="boot-screen">
-    <div class="boot-logo">
-      <svg viewBox="0 0 100 100">
-        <defs>
-          <linearGradient id="droneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#5a9aa8"/>
-            <stop offset="100%" style="stop-color:#2d6a7a"/>
-          </linearGradient>
-        </defs>
-        <!-- Drone body -->
-        <ellipse cx="50" cy="50" rx="15" ry="8" fill="url(#droneGrad)" stroke="#1a4a5a" stroke-width="2"/>
-        <!-- Arms -->
-        <line x1="35" y1="42" x2="20" y2="30" stroke="#5a9aa8" stroke-width="3" stroke-linecap="round"/>
-        <line x1="65" y1="42" x2="80" y2="30" stroke="#5a9aa8" stroke-width="3" stroke-linecap="round"/>
-        <line x1="35" y1="58" x2="20" y2="70" stroke="#5a9aa8" stroke-width="3" stroke-linecap="round"/>
-        <line x1="65" y1="58" x2="80" y2="70" stroke="#5a9aa8" stroke-width="3" stroke-linecap="round"/>
-        <!-- Propellers -->
-        <g class="propeller" style="transform-origin: 20px 30px">
-          <ellipse cx="20" cy="30" rx="12" ry="3" fill="#c5dde8" opacity="0.8"/>
-        </g>
-        <g class="propeller" style="transform-origin: 80px 30px; animation-delay: 0.1s">
-          <ellipse cx="80" cy="30" rx="12" ry="3" fill="#c5dde8" opacity="0.8"/>
-        </g>
-        <g class="propeller" style="transform-origin: 20px 70px; animation-delay: 0.2s">
-          <ellipse cx="20" cy="70" rx="12" ry="3" fill="#c5dde8" opacity="0.8"/>
-        </g>
-        <g class="propeller" style="transform-origin: 80px 70px; animation-delay: 0.3s">
-          <ellipse cx="80" cy="70" rx="12" ry="3" fill="#c5dde8" opacity="0.8"/>
-        </g>
-        <!-- Camera -->
-        <circle cx="50" cy="55" r="4" fill="#1a4a5a"/>
-        <circle cx="50" cy="55" r="2" fill="#5a9aa8"/>
-      </svg>
-    </div>
-    <div class="boot-text">
-      <div class="typing">PORTFOLIO_OS v2.5 - Initializing...</div>
-    </div>
-    <div class="loading-container">
-      <div class="loading-bar"></div>
-    </div>
-    <div class="boot-status" id="boot-status"></div>
+  <!-- Crosshair cursor layer -->
+  <div class="crosshair active" aria-hidden="true">
+    <div class="line line-h"></div>
+    <div class="line line-v"></div>
+    <div class="dot"></div>
   </div>
+  <div class="coords active" aria-hidden="true">X 0000 &nbsp;·&nbsp; Y 0000</div>
 
-  <!-- Desktop -->
-  <div id="desktop">
-    <div class="desktop-icons">
-      <div class="desktop-icon" data-window="about">
-        <div class="icon">👤</div>
-        <span>About Me</span>
-      </div>
-      <div class="desktop-icon" data-window="projects">
-        <div class="icon">🚁</div>
-        <span>Projects</span>
-      </div>
-      <div class="desktop-icon" data-window="skills">
-        <div class="icon">⚡</div>
-        <span>Skills</span>
-      </div>
-      <div class="desktop-icon" data-window="contact">
-        <div class="icon">📧</div>
-        <span>Contact</span>
+  <div class="wrap">
+    <!-- Meta bar -->
+    <div class="meta">
+      <div class="left">Isaac Puah · Portfolio</div>
+      <div class="right">
+        <span>Berkeley, CA</span>
+        <span>2026</span>
       </div>
     </div>
-  </div>
 
-  <!-- Windows -->
-  <div class="window" id="window-about" style="width: 450px; height: 380px; top: 60px; left: 120px;">
-    <div class="window-titlebar">
-      <span class="icon">👤</span>
-      <span class="window-title">About Me</span>
-      <div class="window-controls">
-        <button class="window-btn minimize">─</button>
-        <button class="window-btn maximize">□</button>
-        <button class="window-btn close">✕</button>
-      </div>
-    </div>
-    <div class="window-content">
-      <div class="about-header">
-        <div class="about-avatar">🧑‍💻</div>
-        <div class="about-info">
-          <h1>Isaac</h1>
-          <div class="title">Software Engineer & Drone Systems Specialist</div>
-          <div class="tagline">"Building the future, one line of code at a time"</div>
-        </div>
-      </div>
-      <div class="content-section">
-        <h2>Welcome to my Portfolio</h2>
-        <p>I'm a passionate developer transitioning into software engineering, with a unique background in drone systems and aerial technology. I combine hardware knowledge with modern full-stack development skills to create innovative solutions.</p>
-        <p>Currently focused on building technically impressive projects that showcase real-world problem-solving capabilities—from real-time collaboration tools to AI-powered applications.</p>
-      </div>
-      <div class="content-section">
-        <h2>What Drives Me</h2>
-        <p>The intersection of software and physical systems fascinates me. Whether it's programming autonomous flight paths, processing aerial imagery, or building web applications, I approach every challenge with curiosity and determination.</p>
-      </div>
-      <div style="margin-top: 16px;">
-        <a href="resume.pdf" download class="btn btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-          <span>📄</span> Download Resume
-        </a>
-      </div>
-    </div>
-    <div class="window-resize"></div>
-  </div>
+    <!-- Hero -->
+    <header class="hero">
+      <h1 class="name">Isaac <em>Puah</em></h1>
+      <p class="tagline">
+        Student, builder, and drone-systems tinkerer — working at the quiet
+        intersection of software and the physical world.
+      </p>
+      <p class="tagline-mono">UC Berkeley · EECS + Aerial Robotics</p>
+    </header>
 
-  <div class="window" id="window-projects" style="width: 550px; height: 500px; top: 40px; left: 200px;">
-    <div class="window-titlebar">
-      <span class="icon">🚁</span>
-      <span class="window-title">Projects - Drone Portfolio</span>
-      <div class="window-controls">
-        <button class="window-btn minimize">─</button>
-        <button class="window-btn maximize">□</button>
-        <button class="window-btn close">✕</button>
+    <!-- About -->
+    <section class="about" id="about">
+      <div class="sec-head">
+        <span class="sec-num">01</span>
+        <span class="sec-title">About</span>
+        <span class="sec-rule"></span>
       </div>
-    </div>
-    <div class="window-content">
-      <div class="project-card">
-        <div class="project-header">
-          <span>🚁</span> Autonomous Drone Navigation System
-        </div>
-        <div class="project-body">
-          <div class="project-media">
-            <div class="media-item" data-type="image" data-src="drone-overview" data-caption="Custom-built quadcopter with GPS and obstacle avoidance">
-              <div class="icon">📷</div>
-              <span>Drone Overview</span>
-            </div>
-            <div class="media-item video" data-type="video" data-src="flight-test" data-caption="Autonomous waypoint navigation test flight">
-              <div class="icon">🎬</div>
-              <span>Flight Test</span>
-            </div>
-            <div class="media-item" data-type="image" data-src="pcb-design" data-caption="Custom flight controller PCB design">
-              <div class="icon">📷</div>
-              <span>PCB Design</span>
-            </div>
-            <div class="media-item video" data-type="video" data-src="obstacle-avoid" data-caption="Real-time obstacle detection and avoidance demo">
-              <div class="icon">🎬</div>
-              <span>Obstacle Avoid</span>
-            </div>
+      <p class="lede">
+        I like making things that think, move, and sometimes fly. My background
+        sits between embedded systems and full-stack software — flight
+        controllers on one screen, React components on the other.
+      </p>
+      <p>
+        Lately I've been drawn to the places where code meets physical systems:
+        autonomous navigation, real-time telemetry, and the small engineering
+        decisions that make a machine feel deliberate rather than lucky.
+      </p>
+      <p>
+        <em>
+          Curious about PID loops, clean type, and the question of how much
+          software can be honestly described as “simple.”
+        </em>
+      </p>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects" id="work">
+      <div class="sec-head">
+        <span class="sec-num">02</span>
+        <span class="sec-title">Selected Work</span>
+        <span class="sec-rule"></span>
+      </div>
+
+      <article class="project">
+        <div class="project-index">W—01</div>
+        <div>
+          <h2 class="project-title">
+            Autonomous Drone <em>Navigation</em>
+          </h2>
+          <p class="project-desc">
+            A fully autonomous quadcopter: GPS waypoint routing, ultrasonic
+            obstacle detection, and automated return-to-home. A custom PID
+            controller processes sensor data at 100 Hz and makes navigation
+            decisions in real time.
+          </p>
+          <div class="project-meta">
+            <span>C++ · Arduino</span>
+            <span>PID Control</span>
+            <span>Sensor Fusion</span>
+            <span>GPS / MAVLink</span>
           </div>
-          <p class="project-desc">Built a fully autonomous quadcopter capable of GPS waypoint navigation, real-time obstacle detection using ultrasonic sensors, and automated return-to-home functionality. The system processes sensor data at 100Hz and makes navigation decisions using a custom PID controller.</p>
-          <div class="project-tech">
-            <span class="tech-tag">C++</span>
-            <span class="tech-tag">Arduino</span>
-            <span class="tech-tag">PID Control</span>
-            <span class="tech-tag">GPS</span>
-            <span class="tech-tag">Sensor Fusion</span>
+          <div class="project-image">
+            <img src="images/drone_overview.jpg" alt="Drone overview" />
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="project-card">
-        <div class="project-header">
-          <span>🗺️</span> Aerial Mapping & 3D Reconstruction
-        </div>
-        <div class="project-body">
-          <div class="project-media">
-            <div class="media-item" data-type="image" data-src="aerial-capture" data-caption="High-resolution aerial imagery capture">
-              <div class="icon">📷</div>
-              <span>Aerial Capture</span>
-            </div>
-            <div class="media-item" data-type="image" data-src="3d-model" data-caption="Photogrammetry-generated 3D terrain model">
-              <div class="icon">📷</div>
-              <span>3D Model</span>
-            </div>
-            <div class="media-item video" data-type="video" data-src="mapping-demo" data-caption="Automated grid flight pattern for mapping">
-              <div class="icon">🎬</div>
-              <span>Mapping Demo</span>
-            </div>
-            <div class="media-item" data-type="image" data-src="ortho-output" data-caption="Final orthomosaic output with GIS integration">
-              <div class="icon">📷</div>
-              <span>Ortho Output</span>
-            </div>
+      <article class="project">
+        <div class="project-index">W—02</div>
+        <div>
+          <h2 class="project-title">
+            Aerial Mapping &amp; <em>3D Reconstruction</em>
+          </h2>
+          <p class="project-desc">
+            A photogrammetry pipeline that captures overlapping imagery and
+            produces high-accuracy orthomosaics and 3D terrain models. Used for
+            agricultural monitoring and construction surveys.
+          </p>
+          <div class="project-meta">
+            <span>Python · OpenCV</span>
+            <span>Photogrammetry</span>
+            <span>GDAL / GIS</span>
           </div>
-          <p class="project-desc">Developed a complete aerial mapping pipeline that captures overlapping imagery, processes it through photogrammetry software, and generates high-accuracy orthomosaics and 3D terrain models. Used for agricultural monitoring and construction site surveys.</p>
-          <div class="project-tech">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">OpenCV</span>
-            <span class="tech-tag">Photogrammetry</span>
-            <span class="tech-tag">GIS</span>
-            <span class="tech-tag">GDAL</span>
+          <div class="project-image">
+            <img src="images/pcb_design.jpg" alt="Flight hardware PCB" />
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="project-card">
-        <div class="project-header">
-          <span>📡</span> Real-Time Telemetry Dashboard
-        </div>
-        <div class="project-body">
-          <div class="project-media">
-            <div class="media-item" data-type="image" data-src="dashboard-ui" data-caption="Live telemetry dashboard interface">
-              <div class="icon">📷</div>
-              <span>Dashboard UI</span>
-            </div>
-            <div class="media-item video" data-type="video" data-src="live-demo" data-caption="Real-time data streaming during flight">
-              <div class="icon">🎬</div>
-              <span>Live Demo</span>
-            </div>
-          </div>
-          <p class="project-desc">Built a web-based real-time telemetry dashboard using WebSockets and D3.js that displays live flight data including altitude, speed, battery status, and GPS position. Features historical data logging and replay functionality.</p>
-          <div class="project-tech">
-            <span class="tech-tag">React</span>
-            <span class="tech-tag">Node.js</span>
-            <span class="tech-tag">WebSocket</span>
-            <span class="tech-tag">D3.js</span>
-            <span class="tech-tag">PostgreSQL</span>
+      <article class="project">
+        <div class="project-index">W—03</div>
+        <div>
+          <h2 class="project-title">
+            Real-time Telemetry <em>Dashboard</em>
+          </h2>
+          <p class="project-desc">
+            A browser dashboard that streams live flight data — altitude, speed,
+            battery, GPS — through WebSockets, with historical logging and
+            replay. Built for quick triage during test flights.
+          </p>
+          <div class="project-meta">
+            <span>React · Node.js</span>
+            <span>WebSocket</span>
+            <span>D3.js</span>
+            <span>PostgreSQL</span>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="window-resize"></div>
-  </div>
+      </article>
+    </section>
 
-  <div class="window" id="window-skills" style="width: 420px; height: 400px; top: 80px; left: 350px;">
-    <div class="window-titlebar">
-      <span class="icon">⚡</span>
-      <span class="window-title">Skills & Technologies</span>
-      <div class="window-controls">
-        <button class="window-btn minimize">─</button>
-        <button class="window-btn maximize">□</button>
-        <button class="window-btn close">✕</button>
+    <!-- Footer / Contact -->
+    <footer class="footer">
+      <div class="footer-left">
+        © 2026 &nbsp; Typeset in EB Garamond
       </div>
-    </div>
-    <div class="window-content">
-      <div class="skills-grid">
-        <div class="skill-category">
-          <h3>Frontend</h3>
-          <span class="skill-tag">React</span>
-          <span class="skill-tag">Next.js</span>
-          <span class="skill-tag">TypeScript</span>
-          <span class="skill-tag">Tailwind CSS</span>
-          <span class="skill-tag">D3.js</span>
-        </div>
-        <div class="skill-category">
-          <h3>Backend</h3>
-          <span class="skill-tag">Node.js</span>
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">Express</span>
-          <span class="skill-tag">FastAPI</span>
-          <span class="skill-tag">GraphQL</span>
-        </div>
-        <div class="skill-category">
-          <h3>Databases</h3>
-          <span class="skill-tag">PostgreSQL</span>
-          <span class="skill-tag">MongoDB</span>
-          <span class="skill-tag">Redis</span>
-          <span class="skill-tag">Firebase</span>
-        </div>
-        <div class="skill-category">
-          <h3>DevOps</h3>
-          <span class="skill-tag">Docker</span>
-          <span class="skill-tag">AWS</span>
-          <span class="skill-tag">Vercel</span>
-          <span class="skill-tag">CI/CD</span>
-          <span class="skill-tag">Git</span>
-        </div>
-        <div class="skill-category">
-          <h3>Drone/Embedded</h3>
-          <span class="skill-tag">C/C++</span>
-          <span class="skill-tag">Arduino</span>
-          <span class="skill-tag">PID Control</span>
-          <span class="skill-tag">Sensor Fusion</span>
-          <span class="skill-tag">MAVLink</span>
-        </div>
-        <div class="skill-category">
-          <h3>AI/ML</h3>
-          <span class="skill-tag">OpenAI API</span>
-          <span class="skill-tag">LangChain</span>
-          <span class="skill-tag">TensorFlow</span>
-          <span class="skill-tag">Computer Vision</span>
-        </div>
+      <div class="footer-links">
+        <a href="mailto:isaacpuah@berkeley.edu">Email</a>
+        <a href="https://github.com/IsaacPuah" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="resume.pdf" target="_blank" rel="noopener">Résumé</a>
       </div>
-      <div class="content-section" style="margin-top: 16px;">
-        <h2>Currently Learning</h2>
-        <p>WebSockets & Real-time Systems, CRDTs for Collaboration, Kubernetes, Advanced System Design</p>
-      </div>
-    </div>
-    <div class="window-resize"></div>
-  </div>
-
-  <div class="window" id="window-contact" style="width: 380px; height: 420px; top: 100px; left: 450px;">
-    <div class="window-titlebar">
-      <span class="icon">📧</span>
-      <span class="window-title">Contact Me</span>
-      <div class="window-controls">
-        <button class="window-btn minimize">─</button>
-        <button class="window-btn maximize">□</button>
-        <button class="window-btn close">✕</button>
-      </div>
-    </div>
-    <div class="window-content">
-      <div class="content-section">
-        <h2>Get in Touch</h2>
-        <p>I'm always open to discussing new projects, opportunities, or just chatting about drones and tech!</p>
-      </div>
-      <form class="contact-form" onsubmit="handleSubmit(event)">
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" placeholder="Your name" required>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" placeholder="your@email.com" required>
-        </div>
-        <div class="form-group">
-          <label>Message</label>
-          <textarea placeholder="What would you like to discuss?"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Send Message</button>
-      </form>
-      <div class="contact-links">
-        <div class="contact-link">
-          <span>💼</span> LinkedIn
-        </div>
-        <div class="contact-link">
-          <span>🐙</span> GitHub
-        </div>
-        <div class="contact-link">
-          <span>📧</span> Email
-        </div>
-      </div>
-    </div>
-    <div class="window-resize"></div>
-  </div>
-
-  <!-- Taskbar -->
-  <div id="taskbar">
-    <button class="start-button" id="start-btn">
-      <svg class="logo" viewBox="0 0 24 24">
-        <defs>
-          <linearGradient id="startGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#5a9aa8"/>
-            <stop offset="100%" style="stop-color:#2d6a7a"/>
-          </linearGradient>
-        </defs>
-        <circle cx="12" cy="12" r="10" fill="url(#startGrad)"/>
-        <text x="12" y="16" text-anchor="middle" fill="white" font-size="10" font-weight="bold">I</text>
-      </svg>
-      <span>Start</span>
-    </button>
-    <div class="taskbar-divider"></div>
-    <div class="taskbar-windows" id="taskbar-windows"></div>
-    <div class="system-tray">
-      <span class="tray-icon">🔊</span>
-      <span class="tray-icon">📶</span>
-      <span class="tray-icon">🔋</span>
-      <div class="clock" id="clock">12:00 PM</div>
-    </div>
-  </div>
-
-  <!-- Start Menu -->
-  <div id="start-menu">
-    <div class="start-menu-header">
-      <div class="avatar">🧑‍💻</div>
-      <div class="user-info">
-        <div class="user-name">Isaac</div>
-        <div class="user-title">Software Engineer</div>
-      </div>
-    </div>
-    <div class="start-menu-items">
-      <div class="start-menu-item" data-window="about">
-        <span class="icon">👤</span>
-        <span>About Me</span>
-      </div>
-      <div class="start-menu-item" data-window="projects">
-        <span class="icon">🚁</span>
-        <span>Projects</span>
-      </div>
-      <div class="start-menu-item" data-window="skills">
-        <span class="icon">⚡</span>
-        <span>Skills</span>
-      </div>
-      <div class="start-menu-item" data-window="contact">
-        <span class="icon">📧</span>
-        <span>Contact</span>
-      </div>
-      <div class="start-menu-divider"></div>
-      <div class="start-menu-item" onclick="window.open('https://github.com', '_blank')">
-        <span class="icon">🐙</span>
-        <span>GitHub</span>
-      </div>
-      <div class="start-menu-item" onclick="window.open('https://linkedin.com', '_blank')">
-        <span class="icon">💼</span>
-        <span>LinkedIn</span>
-      </div>
-      <div class="start-menu-item" onclick="document.querySelector('a[download]').click()">
-        <span class="icon">📄</span>
-        <span>Download Resume</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Media Viewer -->
-  <div id="media-viewer">
-    <div class="viewer-content">
-      <button class="viewer-close" onclick="closeViewer()">✕</button>
-      <div id="viewer-media-container"></div>
-      <div class="viewer-caption" id="viewer-caption"></div>
-    </div>
+    </footer>
   </div>
 
   <script>
-    // ═══════════════════════════════════════════════════════════════════════
-    // BOOT SEQUENCE
-    // ═══════════════════════════════════════════════════════════════════════
-    
-    const bootMessages = [
-      'Loading system components...',
-      'Initializing drone telemetry modules...',
-      'Calibrating sensors...',
-      'Loading portfolio assets...',
-      'Establishing neural pathways...',
-      'System ready. Welcome, Isaac.'
-    ];
-    
-    let bootIndex = 0;
-    const bootStatus = document.getElementById('boot-status');
-    
-    function showBootMessage() {
-      if (bootIndex < bootMessages.length) {
-        const msg = document.createElement('div');
-        msg.textContent = '> ' + bootMessages[bootIndex];
-        msg.style.animationDelay = (bootIndex * 0.4) + 's';
-        bootStatus.appendChild(msg);
-        bootIndex++;
-        setTimeout(showBootMessage, 400);
+    (function () {
+      var crosshair = document.querySelector('.crosshair');
+      var coords = document.querySelector('.coords');
+      var lineH = document.querySelector('.line-h');
+      var lineV = document.querySelector('.line-v');
+      var dot = document.querySelector('.crosshair .dot');
+      if (!crosshair || !coords || !lineH || !lineV) return;
+
+      // Start at center of viewport so the crosshair is visible before any mouse movement
+      var targetX = window.innerWidth / 2;
+      var targetY = window.innerHeight / 2;
+      var rafPending = false;
+
+      function update() {
+        rafPending = false;
+        lineH.style.transform = 'translate3d(0,' + targetY + 'px,0)';
+        lineV.style.transform = 'translate3d(' + targetX + 'px,0,0)';
+        if (dot) dot.style.transform = 'translate3d(' + targetX + 'px,' + targetY + 'px,0) translate(-50%,-50%)';
+        coords.textContent =
+          'X ' + String(Math.round(targetX)).padStart(4, '0') +
+          '  ·  Y ' + String(Math.round(targetY)).padStart(4, '0');
       }
-    }
-    
-    setTimeout(showBootMessage, 500);
-    
-    setTimeout(() => {
-      document.getElementById('boot-screen').classList.add('fade-out');
-      document.getElementById('desktop').classList.add('visible');
-      document.getElementById('taskbar').classList.add('visible');
-      
-      // Auto-open About window after boot
-      setTimeout(() => openWindow('about'), 500);
-    }, 3500);
-    
-    // ═══════════════════════════════════════════════════════════════════════
-    // WINDOW MANAGEMENT
-    // ═══════════════════════════════════════════════════════════════════════
-    
-    let activeWindow = null;
-    let highestZ = 100;
-    const openWindows = new Set();
-    const windowStates = {};
-    
-    function openWindow(name) {
-      const win = document.getElementById('window-' + name);
-      if (!win) return;
-      
-      win.classList.add('open');
-      openWindows.add(name);
-      bringToFront(win);
-      updateTaskbar();
-      
-      // Restore position if minimized
-      if (windowStates[name]?.minimized) {
-        windowStates[name].minimized = false;
-      }
-    }
-    
-    function closeWindow(win) {
-      const name = win.id.replace('window-', '');
-      win.classList.remove('open', 'active');
-      openWindows.delete(name);
-      updateTaskbar();
-    }
-    
-    function minimizeWindow(win) {
-      const name = win.id.replace('window-', '');
-      win.classList.add('minimizing');
-      windowStates[name] = { ...windowStates[name], minimized: true };
-      
-      setTimeout(() => {
-        win.classList.remove('open', 'minimizing', 'active');
-        updateTaskbar();
-      }, 200);
-    }
-    
-    function maximizeWindow(win) {
-      const name = win.id.replace('window-', '');
-      
-      if (windowStates[name]?.maximized) {
-        // Restore
-        win.style.top = windowStates[name].prevTop;
-        win.style.left = windowStates[name].prevLeft;
-        win.style.width = windowStates[name].prevWidth;
-        win.style.height = windowStates[name].prevHeight;
-        windowStates[name].maximized = false;
-      } else {
-        // Maximize
-        windowStates[name] = {
-          ...windowStates[name],
-          maximized: true,
-          prevTop: win.style.top,
-          prevLeft: win.style.left,
-          prevWidth: win.style.width,
-          prevHeight: win.style.height
-        };
-        win.style.top = '0';
-        win.style.left = '0';
-        win.style.width = '100%';
-        win.style.height = 'calc(100% - 36px)';
-      }
-    }
-    
-    function bringToFront(win) {
-      document.querySelectorAll('.window').forEach(w => {
-        w.classList.remove('active');
-        w.classList.add('inactive');
-      });
-      
-      win.classList.add('active');
-      win.classList.remove('inactive');
-      win.style.zIndex = ++highestZ;
-      activeWindow = win;
-      
-      updateTaskbar();
-    }
-    
-    function updateTaskbar() {
-      const container = document.getElementById('taskbar-windows');
-      container.innerHTML = '';
-      
-      openWindows.forEach(name => {
-        const win = document.getElementById('window-' + name);
-        const titleEl = win.querySelector('.window-title');
-        const iconEl = win.querySelector('.window-titlebar .icon');
-        
-        const item = document.createElement('button');
-        item.className = 'taskbar-item' + (win.classList.contains('active') ? ' active' : '');
-        item.innerHTML = `<span class="icon">${iconEl.textContent}</span><span>${titleEl.textContent}</span>`;
-        item.onclick = () => {
-          if (windowStates[name]?.minimized) {
-            openWindow(name);
-          } else if (win.classList.contains('active')) {
-            minimizeWindow(win);
-          } else {
-            bringToFront(win);
-          }
-        };
-        container.appendChild(item);
-      });
-    }
-    
-    // ═══════════════════════════════════════════════════════════════════════
-    // DRAGGING & RESIZING
-    // ═══════════════════════════════════════════════════════════════════════
-    
-    let isDragging = false;
-    let isResizing = false;
-    let currentTarget = null;
-    let startX, startY, startLeft, startTop, startWidth, startHeight;
-    
-    document.querySelectorAll('.window-titlebar').forEach(titlebar => {
-      titlebar.addEventListener('mousedown', (e) => {
-        if (e.target.classList.contains('window-btn')) return;
-        
-        const win = titlebar.parentElement;
-        const name = win.id.replace('window-', '');
-        
-        if (windowStates[name]?.maximized) return;
-        
-        isDragging = true;
-        currentTarget = win;
-        startX = e.clientX;
-        startY = e.clientY;
-        startLeft = win.offsetLeft;
-        startTop = win.offsetTop;
-        
-        bringToFront(win);
-      });
-    });
-    
-    document.querySelectorAll('.window-resize').forEach(handle => {
-      handle.addEventListener('mousedown', (e) => {
-        const win = handle.parentElement;
-        const name = win.id.replace('window-', '');
-        
-        if (windowStates[name]?.maximized) return;
-        
-        isResizing = true;
-        currentTarget = win;
-        startX = e.clientX;
-        startY = e.clientY;
-        startWidth = win.offsetWidth;
-        startHeight = win.offsetHeight;
-        
-        bringToFront(win);
-        e.stopPropagation();
-      });
-    });
-    
-    document.addEventListener('mousemove', (e) => {
-      if (isDragging && currentTarget) {
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        currentTarget.style.left = (startLeft + dx) + 'px';
-        currentTarget.style.top = Math.max(0, startTop + dy) + 'px';
-      }
-      
-      if (isResizing && currentTarget) {
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        currentTarget.style.width = Math.max(280, startWidth + dx) + 'px';
-        currentTarget.style.height = Math.max(200, startHeight + dy) + 'px';
-      }
-    });
-    
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      isResizing = false;
-      currentTarget = null;
-    });
-    
-    // ═══════════════════════════════════════════════════════════════════════
-    // WINDOW CONTROLS
-    // ═══════════════════════════════════════════════════════════════════════
-    
-    document.querySelectorAll('.window-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const win = btn.closest('.window');
-        
-        if (btn.classList.contains('close')) {
-          closeWindow(win);
-        } else if (btn.classList.contains('minimize')) {
-          minimizeWindow(win);
-        } else if (btn.classList.contains('maximize')) {
-          maximizeWindow(win);
+      update();
+
+      function onMove(e) {
+        targetX = e.clientX;
+        targetY = e.clientY;
+        if (!crosshair.classList.contains('active')) {
+          crosshair.classList.add('active');
+          coords.classList.add('active');
         }
-        
-        e.stopPropagation();
-      });
-    });
-    
-    // Click to activate window
-    document.querySelectorAll('.window').forEach(win => {
-      win.addEventListener('mousedown', () => bringToFront(win));
-    });
-    
-    // ═══════════════════════════════════════════════════════════════════════
-    // DESKTOP ICONS & START MENU
-    // ═══════════════════════════════════════════════════════════════════════
-    
-    document.querySelectorAll('.desktop-icon').forEach(icon => {
-      icon.addEventListener('dblclick', () => {
-        const windowName = icon.dataset.window;
-        openWindow(windowName);
-      });
-    });
-    
-    document.querySelectorAll('.start-menu-item[data-window]').forEach(item => {
-      item.addEventListener('click', () => {
-        const windowName = item.dataset.window;
-        openWindow(windowName);
-        document.getElementById('start-menu').classList.remove('open');
-        document.getElementById('start-btn').classList.remove('active');
-      });
-    });
-    
-    const startBtn = document.getElementById('start-btn');
-    const startMenu = document.getElementById('start-menu');
-    
-    startBtn.addEventListener('click', () => {
-      startMenu.classList.toggle('open');
-      startBtn.classList.toggle('active');
-    });
-    
-    document.addEventListener('click', (e) => {
-      if (!startMenu.contains(e.target) && !startBtn.contains(e.target)) {
-        startMenu.classList.remove('open');
-        startBtn.classList.remove('active');
-      }
-    });
-    
-    // ═══════════════════════════════════════════════════════════════════════
-    // CLOCK
-    // ═══════════════════════════════════════════════════════════════════════
-    
-    function updateClock() {
-      const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      const displayHours = hours % 12 || 12;
-      document.getElementById('clock').textContent = `${displayHours}:${minutes} ${ampm}`;
-    }
-    
-    updateClock();
-    setInterval(updateClock, 1000);
-    
-    // ═══════════════════════════════════════════════════════════════════════
-    // MEDIA VIEWER
-    // ═══════════════════════════════════════════════════════════════════════
-    
-    // Placeholder images/videos for demo
-    const mediaAssets = {
-      'drone-overview': { type: 'placeholder', color: '#2d6a7a' },
-      'flight-test': { type: 'video-placeholder', color: '#1a4a5a' },
-      'pcb-design': { type: 'placeholder', color: '#3a4a52' },
-      'obstacle-avoid': { type: 'video-placeholder', color: '#5a9aa8' },
-      'aerial-capture': { type: 'placeholder', color: '#2d6a7a' },
-      '3d-model': { type: 'placeholder', color: '#1a4a5a' },
-      'mapping-demo': { type: 'video-placeholder', color: '#3a4a52' },
-      'ortho-output': { type: 'placeholder', color: '#5a9aa8' },
-      'dashboard-ui': { type: 'placeholder', color: '#2d6a7a' },
-      'live-demo': { type: 'video-placeholder', color: '#1a4a5a' }
-    };
-    
-    document.querySelectorAll('.media-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const src = item.dataset.src;
-        const caption = item.dataset.caption;
-        const type = item.dataset.type;
-        const asset = mediaAssets[src];
-        
-        const viewer = document.getElementById('media-viewer');
-        const container = document.getElementById('viewer-media-container');
-        const captionEl = document.getElementById('viewer-caption');
-        
-        // Create placeholder visual
-        const placeholder = document.createElement('div');
-        placeholder.className = 'viewer-media';
-        placeholder.style.cssText = `
-          width: 640px;
-          height: 400px;
-          background: linear-gradient(135deg, ${asset.color}, ${asset.color}dd);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          color: #e8f4f8;
-          font-family: var(--font-system);
-        `;
-        
-        if (type === 'video') {
-          placeholder.innerHTML = `
-            <div style="font-size: 48px; margin-bottom: 16px;">🎬</div>
-            <div style="font-size: 16px; font-weight: bold;">Video Placeholder</div>
-            <div style="font-size: 12px; opacity: 0.8; margin-top: 8px;">${src}.mp4</div>
-            <div style="margin-top: 20px; padding: 8px 16px; background: rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;">▶ Play Video</div>
-          `;
-        } else {
-          placeholder.innerHTML = `
-            <div style="font-size: 48px; margin-bottom: 16px;">📷</div>
-            <div style="font-size: 16px; font-weight: bold;">Image Placeholder</div>
-            <div style="font-size: 12px; opacity: 0.8; margin-top: 8px;">${src}.jpg</div>
-            <div style="font-size: 10px; opacity: 0.6; margin-top: 16px;">Replace with your actual drone project images</div>
-          `;
+        if (!rafPending) {
+          rafPending = true;
+          requestAnimationFrame(update);
         }
-        
-        container.innerHTML = '';
-        container.appendChild(placeholder);
-        captionEl.textContent = caption;
-        
-        viewer.classList.add('open');
-      });
-    });
-    
-    function closeViewer() {
-      document.getElementById('media-viewer').classList.remove('open');
-    }
-    
-    document.getElementById('media-viewer').addEventListener('click', (e) => {
-      if (e.target.id === 'media-viewer') {
-        closeViewer();
       }
-    });
-    
-    // ═══════════════════════════════════════════════════════════════════════
-    // FORM HANDLING
-    // ═══════════════════════════════════════════════════════════════════════
-    
-    function handleSubmit(e) {
-      e.preventDefault();
-      alert('Message sent! (Demo mode - no actual email sent)');
-    }
-    
-    // ═══════════════════════════════════════════════════════════════════════
-    // KEYBOARD SHORTCUTS
-    // ═══════════════════════════════════════════════════════════════════════
-    
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeViewer();
-        startMenu.classList.remove('open');
-        startBtn.classList.remove('active');
+
+      function onLeave() {
+        crosshair.classList.remove('active');
+        coords.classList.remove('active');
       }
-    });
+
+      window.addEventListener('mousemove', onMove, { passive: true });
+      window.addEventListener('mouseleave', onLeave);
+      document.addEventListener('mouseleave', onLeave);
+    })();
   </script>
 </body>
 </html>
