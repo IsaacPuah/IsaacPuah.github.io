@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Arms (diagonal) -->
+  <line x1="74" y1="74" x2="46" y2="46" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  <line x1="126" y1="74" x2="154" y2="46" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  <line x1="74" y1="126" x2="46" y2="154" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  <line x1="126" y1="126" x2="154" y2="154" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  <!-- Central body -->
+  <rect x="74" y="74" width="52" height="52" rx="8" fill="white"/>
+  <!-- Camera/sensor -->
+  <circle cx="100" cy="100" r="12" fill="rgba(0,0,0,0.18)"/>
+  <!-- Motor hubs -->
+  <circle cx="42" cy="42" r="22" fill="white"/>
+  <circle cx="158" cy="42" r="22" fill="white"/>
+  <circle cx="42" cy="158" r="22" fill="white"/>
+  <circle cx="158" cy="158" r="22" fill="white"/>
+  <!-- Propeller blades — top-left -->
+  <rect x="27" y="38" width="30" height="8" rx="4" fill="rgba(0,0,0,0.18)"/>
+  <rect x="38" y="27" width="8" height="30" rx="4" fill="rgba(0,0,0,0.18)"/>
+  <!-- Propeller blades — top-right -->
+  <rect x="143" y="38" width="30" height="8" rx="4" fill="rgba(0,0,0,0.18)"/>
+  <rect x="154" y="27" width="8" height="30" rx="4" fill="rgba(0,0,0,0.18)"/>
+  <!-- Propeller blades — bottom-left -->
+  <rect x="27" y="154" width="30" height="8" rx="4" fill="rgba(0,0,0,0.18)"/>
+  <rect x="38" y="143" width="8" height="30" rx="4" fill="rgba(0,0,0,0.18)"/>
+  <!-- Propeller blades — bottom-right -->
+  <rect x="143" y="154" width="30" height="8" rx="4" fill="rgba(0,0,0,0.18)"/>
+  <rect x="154" y="143" width="8" height="30" rx="4" fill="rgba(0,0,0,0.18)"/>
+</svg>

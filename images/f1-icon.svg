@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Front wing -->
+  <rect x="30" y="18" width="140" height="16" rx="5" fill="white"/>
+  <!-- Nose cone -->
+  <rect x="88" y="32" width="24" height="40" rx="5" fill="white"/>
+  <!-- Body (tapers: narrow top, widest mid, narrows rear) -->
+  <path d="M80 68 L120 68 L132 108 L126 156 L74 156 L68 108 Z" fill="white"/>
+  <!-- Cockpit opening -->
+  <ellipse cx="100" cy="100" rx="14" ry="22" fill="rgba(0,0,0,0.2)"/>
+  <!-- Rear narrow section -->
+  <rect x="84" y="154" width="32" height="22" rx="5" fill="white"/>
+  <!-- Rear wing -->
+  <rect x="36" y="172" width="128" height="16" rx="5" fill="white"/>
+  <!-- Rear wing endplates -->
+  <rect x="36" y="168" width="10" height="22" rx="3" fill="white"/>
+  <rect x="154" y="168" width="10" height="22" rx="3" fill="white"/>
+  <!-- Front-left wheel -->
+  <rect x="38" y="38" width="24" height="44" rx="8" fill="white"/>
+  <!-- Front-right wheel -->
+  <rect x="138" y="38" width="24" height="44" rx="8" fill="white"/>
+  <!-- Rear-left wheel (wider) -->
+  <rect x="34" y="108" width="30" height="52" rx="10" fill="white"/>
+  <!-- Rear-right wheel (wider) -->
+  <rect x="136" y="108" width="30" height="52" rx="10" fill="white"/>
+</svg>
