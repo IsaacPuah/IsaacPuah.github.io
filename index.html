@@ -220,6 +220,28 @@
       display: block;
     }
 
+    /* ——— Project subheadings ——— */
+    .project-sections {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 640px;
+    }
+    .project-section-heading {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .project-section-body {
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+
     /* ——— Contact / footer ——— */
     .footer {
       padding-top: 72px;
@@ -382,71 +404,7 @@
         <span class="sec-rule"></span>
       </div>
 
-      <article class="project">
-        <div class="project-index">W—01</div>
-        <div>
-          <h2 class="project-title">
-            Autonomous Drone <em>Navigation</em>
-          </h2>
-          <p class="project-desc">
-            A fully autonomous quadcopter: GPS waypoint routing, ultrasonic
-            obstacle detection, and automated return-to-home. A custom PID
-            controller processes sensor data at 100 Hz and makes navigation
-            decisions in real time.
-          </p>
-          <div class="project-meta">
-            <span>C++ · Arduino</span>
-            <span>PID Control</span>
-            <span>Sensor Fusion</span>
-            <span>GPS / MAVLink</span>
-          </div>
-          <div class="project-image">
-            <img src="images/drone_overview.jpg" alt="Drone overview" />
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="project-index">W—02</div>
-        <div>
-          <h2 class="project-title">
-            Aerial Mapping &amp; <em>3D Reconstruction</em>
-          </h2>
-          <p class="project-desc">
-            A photogrammetry pipeline that captures overlapping imagery and
-            produces high-accuracy orthomosaics and 3D terrain models. Used for
-            agricultural monitoring and construction surveys.
-          </p>
-          <div class="project-meta">
-            <span>Python · OpenCV</span>
-            <span>Photogrammetry</span>
-            <span>GDAL / GIS</span>
-          </div>
-          <div class="project-image">
-            <img src="images/pcb_design.jpg" alt="Flight hardware PCB" />
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="project-index">W—03</div>
-        <div>
-          <h2 class="project-title">
-            Real-time Telemetry <em>Dashboard</em>
-          </h2>
-          <p class="project-desc">
-            A browser dashboard that streams live flight data — altitude, speed,
-            battery, GPS — through WebSockets, with historical logging and
-            replay. Built for quick triage during test flights.
-          </p>
-          <div class="project-meta">
-            <span>React · Node.js</span>
-            <span>WebSocket</span>
-            <span>D3.js</span>
-            <span>PostgreSQL</span>
-          </div>
-        </div>
-      </article>
+      <div id="project-list"></div>
     </section>
 
     <!-- Footer / Contact -->
@@ -463,6 +421,57 @@
     </footer>
   </div>
 
+  <script src="projects.js"></script>
+  <script>
+    (function () {
+      var list = document.getElementById('project-list');
+      if (list && typeof PROJECTS !== 'undefined') {
+        PROJECTS.forEach(function (p, i) {
+          var index = 'W—' + String(i + 1).padStart(2, '0');
+
+          var tagsHtml = p.tags.map(function (t) {
+            return '<span>' + t + '</span>';
+          }).join('');
+
+          var imageHtml = p.image
+            ? '<div class="project-image"><img src="' + p.image + '" alt="' + p.imageAlt + '" /></div>'
+            : '';
+
+          var sectionsHtml = (p.sections && p.sections.length)
+            ? '<div class="project-sections">' +
+                p.sections.map(function (s) {
+                  return '<div>' +
+                    '<div class="project-section-heading">' + s.heading + '</div>' +
+                    '<p class="project-section-body">' + s.body + '</p>' +
+                  '</div>';
+                }).join('') +
+              '</div>'
+            : '';
+
+          var titleHtml = p.titleItalic
+            ? p.title + ' <em>' + p.titleItalic + '</em>'
+            : p.title;
+
+          var titleWrap = p.link
+            ? '<a href="' + p.link + '" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">' + titleHtml + '</a>'
+            : titleHtml;
+
+          list.insertAdjacentHTML('beforeend',
+            '<article class="project">' +
+              '<div class="project-index">' + index + '</div>' +
+              '<div>' +
+                '<h2 class="project-title">' + titleWrap + '</h2>' +
+                '<p class="project-desc">' + p.desc + '</p>' +
+                '<div class="project-meta">' + tagsHtml + '</div>' +
+                imageHtml +
+                sectionsHtml +
+              '</div>' +
+            '</article>'
+          );
+        });
+      }
+    }());
+  </script>
   <script>
     (function () {
       var crosshair = document.querySelector('.crosshair');
