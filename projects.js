@@ -86,6 +86,10 @@ var PROJECTS = [
     tags: ["C/C++", "ESP32", "CAN Bus", "I2C", "KiCad", "PlatformIO"],
     image: "",
     imageAlt: "",
+    images: [
+      { src: "images/layout.webp", alt: "PCB layout" },
+      { src: "images/schematic.webp", alt: "PCB schematic" }
+    ],
     link: "https://github.com/CalSol/Excalibur-FW",
     sections: [
       {
@@ -103,8 +107,8 @@ var PROJECTS = [
     titleItalic: "Predictor",
     desc: "A machine learning model that predicts a driver's probability of finishing on the podium given their grid position, team, and circuit. Trained on historical race data and served through an interactive Streamlit dashboard.",
     tags: ["Python", "scikit-learn", "Streamlit", "pandas"],
-    image: "",
-    imageAlt: "",
+    image: "images/f1_podium.webp",
+    imageAlt: "F1 Podium Predictor screenshot",
     link: "",
     sections: [
       {
