@@ -75,9 +75,27 @@
     .hero {
       padding: 90px 0 60px;
       border-bottom: 1px solid var(--rule-soft);
+      display: flex;
+      align-items: center;
+      gap: 48px;
     }
+    .hero-text { flex: 1 1 auto; min-width: 0; }
+    .hero-photo {
+      flex: 0 0 auto;
+      width: clamp(180px, 32%, 250px);
+    }
+    .hero-photo img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: 62% 20%;   /* lean toward Isaac, trim the left edge */
+      filter: grayscale(1) contrast(0.95);
+      transition: filter 0.6s ease;
+    }
+    .hero-photo img:hover { filter: grayscale(0) contrast(1); }
     .name {
-      font-size: clamp(48px, 8vw, 96px);
+      font-size: clamp(44px, 7vw, 84px);
       font-weight: 500;
       line-height: 0.95;
       letter-spacing: -0.02em;
@@ -366,6 +384,8 @@
     /* ——— Responsive ——— */
     @media (max-width: 640px) {
       .wrap { padding: 40px 24px 80px; }
+      .hero { flex-direction: column-reverse; align-items: flex-start; gap: 28px; padding: 56px 0 48px; }
+      .hero-photo { width: min(200px, 55%); }
       .project { grid-template-columns: 1fr; gap: 10px; }
       .project-index { padding-top: 0; }
       .meta { flex-direction: column; gap: 6px; align-items: flex-start; }
@@ -390,11 +410,16 @@
 
     <!-- Hero -->
     <header class="hero">
-      <h1 class="name" data-yap="yep, that's me.">Isaac Puah</h1>
-      <p class="tagline">
-        Student in EECS. I build things to find out what I'm capable of.
-      </p>
-      <p class="tagline-mono" data-yap="go bears.">UC Berkeley · EECS + Aerial Robotics</p>
+      <div class="hero-text">
+        <h1 class="name" data-yap="yep, that's me.">Isaac Puah</h1>
+        <p class="tagline">
+          Student in EECS. I build things to find out what I'm capable of.
+        </p>
+        <p class="tagline-mono" data-yap="go bears.">UC Berkeley · EECS + Aerial Robotics</p>
+      </div>
+      <div class="hero-photo">
+        <img src="images/isaac.jpg" alt="Isaac Puah" draggable="false" />
+      </div>
     </header>
 
     <!-- Projects -->
