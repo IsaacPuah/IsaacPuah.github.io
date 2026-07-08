@@ -2,6 +2,7 @@ var PROJECTS = [
   {
     title: "Autonomous Drone",
     titleItalic: "— Infineon Sponsored",
+    yap: "it flies. usually.",
     desc: "An Infineon-sponsored autonomous drone achieving 92% parking spot detection accuracy. Integrates PSoC 6 edge inference, a dual Raspberry Pi compute architecture, and a full DroneKit-Python autonomous flight stack interfacing with a Pixhawk flight controller.",
     tags: ["C++", "Python", "PSoC 6", "YOLOv8n", "Raspberry Pi", "DroneKit"],
     image: "images/drone_overview.jpg",
@@ -25,6 +26,7 @@ var PROJECTS = [
   {
     title: "Silicarise Technology",
     titleItalic: "— Software Validation Intern",
+    yap: "found 8 race conditions. they lost.",
     desc: "Software Validation Engineer Intern at Silicarise Technology, Penang, Malaysia (Jul – Aug 2025). Overhauled the embedded software test infrastructure for K80 embedded systems, expanding API test coverage from 45% to 87% and surfacing critical concurrency bugs before deployment.",
     tags: ["C/C++", "GoogleTest", "QEMU", "Docker", "RISC-V", "Multithreading"],
     image: "",
@@ -44,6 +46,7 @@ var PROJECTS = [
   {
     title: "Lawrence Berkeley Lab",
     titleItalic: "— Research Intern",
+    yap: "microbes have opinions too",
     desc: "Research Intern at LBNL's Environmental Genomics & Systems Biology division (Feb 2026 – Present). Building a natural language-to-graph query interface for KG-Microbe, a large-scale knowledge graph integrating microbial genomics, taxonomy, and trait data across DOE KBase and NIH Bridge2AI platforms.",
     tags: ["Python", "DuckDB", "Google Gemini", "NL-to-SQL", "Graph Queries"],
     image: "",
@@ -63,6 +66,7 @@ var PROJECTS = [
   {
     title: "SolShield",
     titleItalic: "— HackMerced XI",
+    yap: "48 hours, 3 people, no sleep",
     desc: "Led a 3-person team to design and ship a non-custodial Solana USDC web wallet in 48 hours. Handles keypair generation, real-time balance fetching, SPL token transfers, and automatic Associated Token Account creation for recipients.",
     tags: ["Next.js · React", "Solana / web3.js", "SPL Token", "MongoDB", "Tailwind CSS"],
     image: "",
@@ -82,6 +86,7 @@ var PROJECTS = [
   {
     title: "CalSol Solar Racing",
     titleItalic: "— Excalibur Firmware",
+    yap: "the steering wheel talks to everything",
     desc: "Electrical team member on UC Berkeley's Cal Sol Solar Racing Team, developing embedded firmware and PCB hardware for Excalibur, the team's solar car. Responsible for the steering wheel electronics and the multi-protocol vehicle communication layer.",
     tags: ["C/C++", "ESP32", "CAN Bus", "I2C", "KiCad", "PlatformIO"],
     image: "",
@@ -108,6 +113,7 @@ var PROJECTS = [
   {
     title: "F1 Podium",
     titleItalic: "Predictor",
+    yap: "box box.",
     desc: "A machine learning model that predicts a driver's probability of finishing on the podium given their grid position, team, and circuit. Trained on historical race data and served through an interactive Streamlit dashboard.",
     tags: ["Python", "scikit-learn", "Streamlit", "pandas"],
     image: "images/f1_podium.webp",

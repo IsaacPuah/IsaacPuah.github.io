@@ -291,8 +291,30 @@
 
     /* Hide the custom cursor on touch devices; native cursor is used there */
     @media (hover: none), (pointer: coarse) {
-      .cursor-el { display: none; }
+      .cursor-el, .yap { display: none; }
     }
+
+    /* ——— Yapping tooltip (marginalia that follows the cursor) ——— */
+    .yap {
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 10000;
+      pointer-events: none;
+      font-family: "EB Garamond", "Iowan Old Style", Georgia, serif;
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.3;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--rule-soft);
+      box-shadow: 2px 2px 0 rgba(20, 20, 20, 0.08);
+      padding: 4px 10px 6px;
+      white-space: nowrap;
+      transform: rotate(-1.5deg);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    .yap.active { opacity: 1; }
 
     /* ——— Interactive steering wheel (CalSol card) ——— */
     .project-wheel {
@@ -368,11 +390,11 @@
 
     <!-- Hero -->
     <header class="hero">
-      <h1 class="name">Isaac Puah</h1>
+      <h1 class="name" data-yap="yep, that's me.">Isaac Puah</h1>
       <p class="tagline">
-        I'm an undergrad at UC Berkeley studying EECS, with a background in embedded firmware, autonomous systems, and full-stack software. I like making things that move and fly — from drone flight controllers to real-time telemetry pipelines. In my free time I think about PID loops, clean typography, and how much software can honestly be called simple.
+        Student in EECS. I build things to find out what I'm capable of.
       </p>
-      <p class="tagline-mono">UC Berkeley · EECS + Aerial Robotics</p>
+      <p class="tagline-mono" data-yap="go bears.">UC Berkeley · EECS + Aerial Robotics</p>
     </header>
 
     <!-- Projects -->
@@ -408,10 +430,10 @@
         © 2026 &nbsp; Typeset in EB Garamond
       </div>
       <div class="footer-links">
-        <a href="mailto:isaacpuah@berkeley.edu">Email</a>
-        <a href="https://github.com/IsaacPuah" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://www.linkedin.com/in/isaac-puah/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="resume.pdf" target="_blank" rel="noopener">Résumé</a>
+        <a href="mailto:isaacpuah@berkeley.edu" data-yap="inbox is always open">Email</a>
+        <a href="https://github.com/IsaacPuah" target="_blank" rel="noopener" data-yap="commits, chaos, everything between">GitHub</a>
+        <a href="https://www.linkedin.com/in/isaac-puah/" target="_blank" rel="noopener" data-yap="the professional me">LinkedIn</a>
+        <a href="resume.pdf" target="_blank" rel="noopener" data-yap="one page, allegedly">Résumé</a>
       </div>
     </footer>
   </div>
@@ -427,6 +449,8 @@
           var tagsHtml = p.tags.map(function (t) {
             return '<span>' + t + '</span>';
           }).join('');
+
+          var yapAttr = p.yap ? ' data-yap="' + p.yap + '"' : '';
 
           var imageHtml = '';
           if (p.steer) {
@@ -470,7 +494,7 @@
             '<article class="project">' +
               '<div class="project-index">' + index + '</div>' +
               '<div>' +
-                '<h2 class="project-title">' + titleWrap + '</h2>' +
+                '<h2 class="project-title"' + yapAttr + '>' + titleWrap + '</h2>' +
                 '<p class="project-desc">' + p.desc + '</p>' +
                 '<div class="project-meta">' + tagsHtml + '</div>' +
                 imageHtml +
@@ -591,6 +615,55 @@
       });
 
       requestAnimationFrame(frame);
+    })();
+  </script>
+  <script>
+    /* ——— Yapping tooltip: little notes that follow the cursor ——— */
+    (function () {
+      if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
+
+      var yap = document.createElement('div');
+      yap.className = 'yap';
+      yap.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(yap);
+
+      var current = null;
+      var typeTimer = null;
+
+      function position(e) {
+        var pad = 16;
+        var w = yap.offsetWidth, h = yap.offsetHeight;
+        var left = e.clientX + pad;
+        var top = e.clientY + pad + 4;
+        if (left + w > window.innerWidth - 10) left = e.clientX - w - pad;
+        if (top + h > window.innerHeight - 10) top = e.clientY - h - pad;
+        yap.style.left = left + 'px';
+        yap.style.top = top + 'px';
+      }
+
+      document.addEventListener('mousemove', function (e) {
+        if (current) position(e);
+      }, { passive: true });
+
+      document.addEventListener('mouseover', function (e) {
+        var t = e.target.closest ? e.target.closest('[data-yap]') : null;
+        if (t === current) return;
+        if (typeTimer) clearInterval(typeTimer);
+        current = t;
+        if (!t) { yap.classList.remove('active'); return; }
+
+        var text = t.getAttribute('data-yap') || '';
+        yap.textContent = '';
+        yap.classList.add('active');
+        position(e);
+
+        var i = 0;
+        typeTimer = setInterval(function () {
+          i++;
+          yap.textContent = text.slice(0, i);
+          if (i >= text.length) clearInterval(typeTimer);
+        }, 18);
+      });
     })();
   </script>
 </body>
