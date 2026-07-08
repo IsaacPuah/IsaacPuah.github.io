@@ -86,6 +86,9 @@ var PROJECTS = [
     tags: ["C/C++", "ESP32", "CAN Bus", "I2C", "KiCad", "PlatformIO"],
     image: "",
     imageAlt: "",
+    steer: true,
+    wheel: "images/f1-wheel-cut.png",
+    wheelAlt: "Formula 1 style racing steering wheel",
     images: [
       { src: "images/layout.webp", alt: "PCB layout" },
       { src: "images/schematic.webp", alt: "PCB schematic" }

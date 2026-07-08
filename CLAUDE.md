@@ -19,8 +19,8 @@ python -m http.server 8000
 
 Two files make up the entire site:
 
-- **`index.html`** — All markup, embedded CSS (~343 lines in a `<style>` tag), and two inline `<script>` blocks. The first script renders projects by iterating over the `PROJECTS` array from `projects.js`; the second drives the crosshair cursor and coordinate display using `requestAnimationFrame`.
-- **`projects.js`** — Single exported `PROJECTS` array. Each entry has `title`, `titleItalic`, `desc`, `tags`, `image`, `imageAlt`, `link`, and optional `sections` (subsections with `heading` + `body`). This is the only file to edit when adding or updating project content.
+- **`index.html`** — All markup, embedded CSS in a `<style>` tag, and inline `<script>` blocks: one renders projects by iterating over the `PROJECTS` array from `projects.js`; one drives the ring cursor (a custom ring that eases behind the pointer, native cursor hidden via JS); one powers the drag-to-steer wheel on the CalSol card.
+- **`projects.js`** — Single exported `PROJECTS` array. Each entry has `title`, `titleItalic`, `desc`, `tags`, `link`, optional `sections` (subsections with `heading` + `body`), and optional imagery: a single `image` + `imageAlt`, or an `images` array (`{ src, alt }`) rendered side by side. The CalSol entry additionally sets `steer: true` with `wheel` + `wheelAlt` to render the interactive steering wheel. This is the only file to edit when adding or updating project content.
 
 ## Design System
 
@@ -28,7 +28,8 @@ Two files make up the entire site:
 - **Color tokens**: `--paper` (background) and `--ink` (foreground) CSS variables.
 - **Mobile breakpoint**: 640px media query in the embedded `<style>`.
 - **Project images**: Render grayscale by default, full color on hover.
-- **Crosshair cursor**: Custom SVG crosshair follows mouse; coordinates display in the bottom-right corner.
+- **Ring cursor**: A custom ring follows the mouse (native cursor hidden via a JS-added `.ring-cursor` class) and swells over links, buttons, and the steering wheel. Disabled on touch devices.
+- **Steering wheel**: The CalSol card renders a transparent F1-wheel cutout you drag to steer — rotates in place, locks at ±130° with no wrap-around, springs back to centre on release.
 
 ## Deployment
 

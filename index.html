@@ -248,70 +248,97 @@
     }
     .footer a:hover { border-bottom-color: var(--ink); }
 
-    /* ——— Crosshair cursor effect ——— */
-    .crosshair {
+    /* ——— Ring cursor ——— */
+    /* Native cursor is hidden only once JS confirms a fine pointer (.ring-cursor),
+       so a broken script never leaves a visitor with no cursor at all. */
+    body.ring-cursor,
+    body.ring-cursor a,
+    body.ring-cursor .wheel-spin { cursor: none; }
+
+    .cursor-el {
       position: fixed;
-      inset: 0;
-      pointer-events: none;
+      top: 0; left: 0;
       z-index: 9999;
+      pointer-events: none;
       opacity: 0;
       transition: opacity 0.25s ease;
+      will-change: transform;
     }
-    .crosshair.active { opacity: 1; }
-    .crosshair .line {
-      position: absolute;
-      background: var(--ink);
-      opacity: 0.22;
+    .cursor-el.active { opacity: 1; }
+
+    /* the ring eases behind the pointer and swells over interactive elements */
+    .cursor-ring {
+      width: 26px; height: 26px;
+      border: 1.5px solid var(--ink);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.25s ease,
+                  width 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  height 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  background-color 0.22s ease;
     }
-    /* Small dot at the intersection — the eye's anchor point */
-    .crosshair .dot {
-      position: absolute;
-      width: 5px; height: 5px;
+    .cursor-ring.hot {
+      width: 46px; height: 46px;
+      background: rgba(20, 20, 20, 0.06);
+    }
+    /* a precise dot marks the true pointer position under the laggy ring */
+    .cursor-dot {
+      width: 4px; height: 4px;
       background: var(--ink);
       border-radius: 50%;
-      top: 0; left: 0;
       transform: translate(-50%, -50%);
-      opacity: 0.75;
-      will-change: transform;
-    }
-    .crosshair .line-h {
-      left: 0; right: 0;
-      height: 1px;
-      top: 0;
-      transform: translate3d(0, 0, 0);
-      will-change: transform;
-    }
-    .crosshair .line-v {
-      top: 0; bottom: 0;
-      width: 1px;
-      left: 0;
-      transform: translate3d(0, 0, 0);
-      will-change: transform;
     }
 
-    .coords {
-      position: fixed;
-      bottom: 18px;
-      right: 22px;
+    /* Hide the custom cursor on touch devices; native cursor is used there */
+    @media (hover: none), (pointer: coarse) {
+      .cursor-el { display: none; }
+    }
+
+    /* ——— Interactive steering wheel (CalSol card) ——— */
+    .project-wheel {
+      margin-top: 28px;
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .wheel-spin {
+      width: min(100%, 440px);
+      transform-origin: 50% 46%;   /* steering axis (hub) — tunable */
+      cursor: grab;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+      outline: none;
+      border-radius: 12px;
+    }
+    .wheel-spin.grabbing { cursor: grabbing; }
+    .wheel-spin:focus-visible { outline: 2px solid var(--ink); outline-offset: 8px; }
+    .wheel-spin img {
+      width: 100%;
+      height: auto;
+      display: block;
+      pointer-events: none;
+      filter: grayscale(1) contrast(0.95) drop-shadow(0 10px 16px rgba(20, 20, 20, 0.22));
+      transition: filter 0.6s ease;
+    }
+    /* colour blooms in when you engage — matches the site's photo treatment */
+    .project-wheel:hover .wheel-spin img,
+    .wheel-spin:focus-visible img,
+    .wheel-spin.grabbing img {
+      filter: grayscale(0) contrast(1) drop-shadow(0 10px 16px rgba(20, 20, 20, 0.22));
+    }
+    .wheel-hint {
       font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 10px;
-      letter-spacing: 0.1em;
+      font-size: 11px;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--ink-mute);
-      background: var(--paper);
-      padding: 6px 10px;
-      border: 1px solid var(--rule-soft);
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.25s ease;
-      white-space: nowrap;
     }
-    .coords.active { opacity: 1; }
-
-    /* Hide effect on touch devices */
-    @media (hover: none), (pointer: coarse) {
-      .crosshair, .coords { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .wheel-spin img { transition: none; }
     }
 
     /* ——— Responsive ——— */
@@ -325,13 +352,9 @@
   </style>
 </head>
 <body>
-  <!-- Crosshair cursor layer -->
-  <div class="crosshair active" aria-hidden="true">
-    <div class="line line-h"></div>
-    <div class="line line-v"></div>
-    <div class="dot"></div>
-  </div>
-  <div class="coords active" aria-hidden="true">X 0000 &nbsp;·&nbsp; Y 0000</div>
+  <!-- Ring cursor layer -->
+  <div class="cursor-el cursor-ring" aria-hidden="true"></div>
+  <div class="cursor-el cursor-dot" aria-hidden="true"></div>
 
   <div class="wrap">
     <!-- Meta bar -->
@@ -344,12 +367,12 @@
     </div>
 
     <!-- Hero -->
-    <header class=”hero”>
-      <h1 class=”name”>Isaac Puah</h1>
-      <p class=”tagline”>
+    <header class="hero">
+      <h1 class="name">Isaac Puah</h1>
+      <p class="tagline">
         I'm an undergrad at UC Berkeley studying EECS, with a background in embedded firmware, autonomous systems, and full-stack software. I like making things that move and fly — from drone flight controllers to real-time telemetry pipelines. In my free time I think about PID loops, clean typography, and how much software can honestly be called simple.
       </p>
-      <p class=”tagline-mono”>UC Berkeley · EECS + Aerial Robotics</p>
+      <p class="tagline-mono">UC Berkeley · EECS + Aerial Robotics</p>
     </header>
 
     <!-- Projects -->
@@ -387,7 +410,7 @@
       <div class="footer-links">
         <a href="mailto:isaacpuah@berkeley.edu">Email</a>
         <a href="https://github.com/IsaacPuah" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/isaac-puah/" target="_blank" rel="noopener">LinkedIn</a>
         <a href="resume.pdf" target="_blank" rel="noopener">Résumé</a>
       </div>
     </footer>
@@ -406,14 +429,22 @@
           }).join('');
 
           var imageHtml = '';
+          if (p.steer) {
+            imageHtml += '<div class="project-wheel">' +
+              '<div class="wheel-spin" tabindex="0" role="slider" aria-label="Steering wheel — drag left or right to steer" aria-valuemin="-130" aria-valuemax="130" aria-valuenow="0">' +
+                '<img src="' + p.wheel + '" alt="' + p.wheelAlt + '" draggable="false" />' +
+              '</div>' +
+              '<span class="wheel-hint">Drag to steer</span>' +
+            '</div>';
+          }
           if (p.images && p.images.length) {
-            imageHtml = '<div class="project-images">' +
+            imageHtml += '<div class="project-images">' +
               p.images.map(function (img) {
                 return '<div class="project-image"><img src="' + img.src + '" alt="' + img.alt + '" /></div>';
               }).join('') +
             '</div>';
           } else if (p.image) {
-            imageHtml = '<div class="project-image"><img src="' + p.image + '" alt="' + p.imageAlt + '" /></div>';
+            imageHtml += '<div class="project-image"><img src="' + p.image + '" alt="' + p.imageAlt + '" /></div>';
           }
 
           var sectionsHtml = (p.sections && p.sections.length)
@@ -452,51 +483,114 @@
     }());
   </script>
   <script>
+    /* ——— Drag-to-steer wheel: rotates in place, hard-locks at ±130°,
+       never wraps around, and springs back to centre on release. ——— */
     (function () {
-      var crosshair = document.querySelector('.crosshair');
-      var coords = document.querySelector('.coords');
-      var lineH = document.querySelector('.line-h');
-      var lineV = document.querySelector('.line-v');
-      var dot = document.querySelector('.crosshair .dot');
-      if (!crosshair || !coords || !lineH || !lineV) return;
+      var wheels = document.querySelectorAll('.wheel-spin');
+      if (!wheels.length) return;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var MAX = 130;
 
-      // Start at center of viewport so the crosshair is visible before any mouse movement
-      var targetX = window.innerWidth / 2;
-      var targetY = window.innerHeight / 2;
-      var rafPending = false;
+      wheels.forEach(function (spin) {
+        var rotation = 0, dragging = false, lastAngle = 0, springId = null;
 
-      function update() {
-        rafPending = false;
-        lineH.style.transform = 'translate3d(0,' + targetY + 'px,0)';
-        lineV.style.transform = 'translate3d(' + targetX + 'px,0,0)';
-        if (dot) dot.style.transform = 'translate3d(' + targetX + 'px,' + targetY + 'px,0) translate(-50%,-50%)';
-        coords.textContent =
-          'X ' + String(Math.round(targetX)).padStart(4, '0') +
-          '  ·  Y ' + String(Math.round(targetY)).padStart(4, '0');
-      }
-      update();
-
-      function onMove(e) {
-        targetX = e.clientX;
-        targetY = e.clientY;
-        if (!crosshair.classList.contains('active')) {
-          crosshair.classList.add('active');
-          coords.classList.add('active');
+        function centre() { var r = spin.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
+        function angleOf(e) { var c = centre(); return Math.atan2(e.clientY - c.y, e.clientX - c.x) * 180 / Math.PI; }
+        function clamp(v) { return Math.max(-MAX, Math.min(MAX, v)); }
+        function apply() {
+          spin.style.transform = 'rotate(' + rotation + 'deg)';
+          spin.setAttribute('aria-valuenow', Math.round(rotation));
         }
-        if (!rafPending) {
-          rafPending = true;
-          requestAnimationFrame(update);
+        function stopSpring() { if (springId) { cancelAnimationFrame(springId); springId = null; } }
+        function springToCentre() {
+          stopSpring();
+          if (reduce) { rotation = 0; apply(); return; }
+          (function step() {
+            rotation += (0 - rotation) * 0.16;
+            if (Math.abs(rotation) < 0.15) { rotation = 0; apply(); springId = null; return; }
+            apply();
+            springId = requestAnimationFrame(step);
+          })();
         }
+
+        spin.addEventListener('pointerdown', function (e) {
+          dragging = true; stopSpring();
+          spin.classList.add('grabbing');
+          lastAngle = angleOf(e);
+          spin.setPointerCapture(e.pointerId);
+          e.preventDefault();
+        });
+        spin.addEventListener('pointermove', function (e) {
+          if (!dragging) return;
+          // accumulate the incremental angle each move → holds at the lock, no wrap
+          var a = angleOf(e), d = a - lastAngle;
+          while (d > 180) d -= 360;
+          while (d < -180) d += 360;
+          lastAngle = a;
+          rotation = clamp(rotation + d);
+          apply();
+        });
+        function end(e) {
+          if (!dragging) return;
+          dragging = false;
+          spin.classList.remove('grabbing');
+          try { spin.releasePointerCapture(e.pointerId); } catch (_) {}
+          springToCentre();
+        }
+        spin.addEventListener('pointerup', end);
+        spin.addEventListener('pointercancel', end);
+
+        spin.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowLeft') { stopSpring(); rotation = clamp(rotation - 8); apply(); e.preventDefault(); }
+          else if (e.key === 'ArrowRight') { stopSpring(); rotation = clamp(rotation + 8); apply(); e.preventDefault(); }
+          else if (e.key === 'Home' || e.key === '0') { springToCentre(); }
+        });
+        spin.addEventListener('blur', function () { if (!dragging) springToCentre(); });
+
+        apply();
+      });
+    })();
+  </script>
+  <script>
+    /* ——— Ring cursor: a hollow ring eases behind the pointer while a precise
+       dot marks the true position. The ring swells over interactive elements. ——— */
+    (function () {
+      if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
+
+      var ring = document.querySelector('.cursor-ring');
+      var dot = document.querySelector('.cursor-dot');
+      if (!ring || !dot) return;
+
+      // Only now do we hand cursor duty to the ring, so a broken script
+      // never leaves the visitor with no cursor at all.
+      document.body.classList.add('ring-cursor');
+
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+      var rx = mx, ry = my, shown = false;
+
+      function frame() {
+        var ease = reduce ? 1 : 0.16;
+        rx += (mx - rx) * ease;
+        ry += (my - ry) * ease;
+        ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+        dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+        requestAnimationFrame(frame);
       }
 
-      function onLeave() {
-        crosshair.classList.remove('active');
-        coords.classList.remove('active');
-      }
+      window.addEventListener('mousemove', function (e) {
+        mx = e.clientX; my = e.clientY;
+        if (!shown) { shown = true; rx = mx; ry = my; ring.classList.add('active'); dot.classList.add('active'); }
+      }, { passive: true });
 
-      window.addEventListener('mousemove', onMove, { passive: true });
-      window.addEventListener('mouseleave', onLeave);
-      document.addEventListener('mouseleave', onLeave);
+      document.addEventListener('mouseover', function (e) {
+        if (e.target.closest && e.target.closest('a, button, .wheel-spin')) ring.classList.add('hot');
+      });
+      document.addEventListener('mouseout', function (e) {
+        if (e.target.closest && e.target.closest('a, button, .wheel-spin')) ring.classList.remove('hot');
+      });
+
+      requestAnimationFrame(frame);
     })();
   </script>
 </body>
